@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+arg_command = ARGV.shift
+arg_package = ARGV.shift
+arg_node    = ARGV.shift
+
+
+require_relative "../lib/hull"
+include Hull::DSL
+
+require Dir.pwd + '/config/hull'
+
+
+if arg_command == 'apply'
+  apply(arg_node, arg_package, :install)
+else
+  demonstrate(arg_node, arg_package, :install)
+end
