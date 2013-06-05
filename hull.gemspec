@@ -13,4 +13,5 @@ Gem::Specification.new do |gem|
   gem.version       = '0.1.0'
   gem.add_dependency('colored')
   gem.add_dependency('net-ssh')
+  gem.add_dependency('net-sftp')
 end

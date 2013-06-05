@@ -3,6 +3,7 @@ PATH
   specs:
     hull (0.1.0)
       colored
+      net-sftp
       net-ssh
 
 GEM
@@ -12,6 +13,8 @@ GEM
     metaclass (0.0.1)
     mocha (0.13.1)
       metaclass (~> 0.0.1)
+    net-sftp (2.1.1)
+      net-ssh (>= 2.6.5)
     net-ssh (2.6.7)
     rake (10.0.4)
 

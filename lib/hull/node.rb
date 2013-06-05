@@ -1,4 +1,5 @@
 require 'net/ssh'
+require 'net/sftp'
 
 class Hull::Node
   attr_reader :name, :host
@@ -17,6 +18,20 @@ class Hull::Node
     @host = host
     @connection = nil
     Hull::Node.register(self)
+  end
+
+  def upload(from, to)
+    log('sftp', "UPLOAD: #{from} => #{to}")
+    sftp.upload!(from, to)
+  end
+
+  def download(from, to)
+    log('sftp', "DOWLOAD: #{from} => #{to}")
+    sftp.download!(from, to)
+  end
+
+  def sftp
+    @sftp ||= Net::SFTP::Session.new(connection)
   end
 
   def execute(cmd)

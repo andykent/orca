@@ -11,6 +11,18 @@ class Hull::ExecutionContext
     @node.execute(cmd)
   end
 
+  def upload(from, to)
+    @node.upload(from, to)
+  end
+
+  def download(from, to)
+    @node.download(from, to)
+  end
+
+  def fs
+    Hull::FileSystem.new(self)
+  end
+
   def trigger(action_ref, *args)
     pkg_name, action_name = *action_ref.split(':', 2)
     pkg = Hull::PackageIndex.default.get(pkg_name)
