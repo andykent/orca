@@ -1,20 +1,29 @@
 #!/usr/bin/env ruby
+require 'fileutils'
+
+hull_file = File.join(Dir.pwd, 'config', 'hull.rb')
 
 arg_command = ARGV.shift
-arg_package = ARGV.shift
-arg_node    = ARGV.shift
 
-
-require_relative "../lib/hull"
-include Hull::DSL
-
-require Dir.pwd + '/config/hull'
-
-
-if arg_command == 'apply'
-  execute(arg_node, arg_package, :apply)
-elsif arg_command == 'remove'
-  execute(arg_node, arg_package, :remove)
+if arg_command == 'init'
+  unless File.exists?(hull_file)
+    FileUtils.mkdir_p(File.join(Dir.pwd, 'config'))
+    local_copy = File.join(File.dirname(__FILE__), '..', 'config', 'hull.rb')
+    FileUtils.cp(local_copy, hull_file)
+  end
 else
-  demonstrate(arg_node, arg_package, :apply)
+  require_relative "../lib/hull"
+  include Hull::DSL
+  require hull_file
+
+  arg_package = ARGV.shift
+  arg_node    = ARGV.shift
+
+  if arg_command == 'apply'
+    execute(arg_node, arg_package, :apply)
+  elsif arg_command == 'remove'
+    execute(arg_node, arg_package, :remove)
+  else
+    demonstrate(arg_node, arg_package, :apply)
+  end
 end

@@ -1,38 +1,28 @@
-load_package 'apt'
+# This is an example Hull configuration file
+# You will need to edit or define for youself at
+# least one node and one package for hull to work.
 
 
-package 'ubuntu-dev' do
-  depends_on 'build-essential'
-  depends_on 'git'
-end
+# Define at least one or more nodes where you want
+# package to be applied, nodes are usually
+# physical or virtual machines.
 
-package 'build-essential' do
-  depends_on 'apt'
-
-  install do
-    trigger 'apt:install', 'build-essential'
-  end
-
-  remove do
-    trigger 'apt:remove', 'build-essential'
-  end
-end
+node 'server', 'my.server.address'
 
 
-package 'git' do
-  install do
-    trigger 'apt:install', 'git-core'
-  end
+# packages get applied to servers from the command line
+# Most simple projects will have an 'app' package which
+# defines all the projects dependancies.
 
-  remove do
-    trigger 'apt:remove', 'git-core'
-  end
+package 'app' do
+  depends_on 'my-package'
 end
 
 
-node 'kent-web-1', '198.211.122.159'
+# Define the other packages that you will need...
 
-
-
-# apply 'kent-web-1', 'ubuntu-dev', :install
-# demonstrate '198.211.122.159', 'ubuntu-dev', :install
+package 'my-package' do
+  apply do
+    # your logic here
+  end
+end
