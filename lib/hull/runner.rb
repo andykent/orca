@@ -39,7 +39,7 @@ class Hull::Runner
 
   def demonstrate(command_name)
     @perform = false
-    apply(command_name)
+    execute(command_name)
     @perform = true
   end
 
