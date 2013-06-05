@@ -1,7 +1,7 @@
 require 'net/ssh'
 
 class Hull::Node
-  attr_reader :name
+  attr_reader :name, :host
 
   def self.find(name)
     @nodes[name]
@@ -21,12 +21,15 @@ class Hull::Node
 
   def execute(cmd)
     log('execute', cmd.cyan)
+    output = ""
     connection.exec! cmd do |channel, stream, data|
+      output += data if stream == :stdout
       data.split("\n").each do |line|
         msg = stream == :stdout ? line.green : line.red
         log(stream, msg)
       end
     end
+    output
   end
 
   def log(context, msg)

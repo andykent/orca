@@ -1,0 +1,24 @@
+PATH
+  remote: .
+  specs:
+    hull (0.1.0)
+      colored
+      net-ssh
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    colored (1.2)
+    metaclass (0.0.1)
+    mocha (0.13.1)
+      metaclass (~> 0.0.1)
+    net-ssh (2.6.7)
+    rake (10.0.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  hull!
+  mocha
+  rake

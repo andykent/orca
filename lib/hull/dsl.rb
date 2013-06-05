@@ -7,10 +7,10 @@ module Hull
       Hull::PackageIndex.default.add(pkg)
     end
 
-    def apply(node_name, pkg_name, command)
+    def execute(node_name, pkg_name, command)
       node = Hull::Node.find(node_name)
       pkg = Hull::PackageIndex.default.get(pkg_name)
-      Hull::Runner.new(node, pkg).apply(command)
+      Hull::Runner.new(node, pkg).execute(command)
     end
 
     def demonstrate(node_name, pkg_name, command)

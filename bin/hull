@@ -12,7 +12,9 @@ require Dir.pwd + '/config/hull'
 
 
 if arg_command == 'apply'
-  apply(arg_node, arg_package, :install)
+  execute(arg_node, arg_package, :apply)
+elsif arg_command == 'remove'
+  execute(arg_node, arg_package, :remove)
 else
-  demonstrate(arg_node, arg_package, :install)
+  demonstrate(arg_node, arg_package, :apply)
 end

@@ -9,12 +9,18 @@ class Hull::Package
     @remove = nil
   end
 
-  def depends_on(pkg_name)
-    @dependancies << pkg_name
+  def depends_on(*pkg_names)
+    pkg_names.each do |pkg_name|
+      @dependancies << pkg_name
+    end
   end
 
-  def install(&definition)
-    @commands[:install] = definition
+  def validate(&definition)
+    @commands[:validate] = definition
+  end
+
+  def apply(&definition)
+    @commands[:apply] = definition
   end
 
   def remove(&definition)
