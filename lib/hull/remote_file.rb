@@ -8,6 +8,8 @@ class Hull::RemoteFile
     @context = context
     @path = path
     @exists = nil
+    @permissions = nil
+    @owner = nil
   end
 
   def hash
@@ -53,25 +55,50 @@ class Hull::RemoteFile
   end
 
   def delete!
-    # FileUtils.rm(path)
+    @context.remove(path)
+    invalidate!
     self
   end
 
   def set_permissions(mask)
-    # FileUtils.chmod_R(mask, path)
+    @context.run("chmod -R #{sprintf("%o",mask)} #{path}")
+    invalidate!
     self
   end
 
   def permissions
-    # File.stat(path).mode & 0777
+    @permissions ||= @context.run("stat --format=%a #{path}").strip.to_i(8)
   end
 
   def set_owner(user, group=nil)
-    # FileUtils.chown_R(user, group, path)
+    @context.run("chown -R #{user}:#{group} #{path}")
+    invalidate!
     self
+  end
+
+  def owner
+    @owner ||= begin
+      user, group = @context.run("stat --format=%U:%G #{path}").chomp.split(":")
+      {:user => user, :group => group}
+    end
+  end
+
+  def user
+    owner[:user]
+  end
+
+  def group
+    owner[:group]
   end
 
   def is_local?
     false
+  end
+
+  private
+
+  def invalidate!
+    @permissions = nil
+    @owner = nil
   end
 end

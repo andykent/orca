@@ -73,12 +73,19 @@ describe Hull::RemoteFile do
     end
   end
 
+  describe 'delete!' do
+    it "removes the file from the remote server" do
+      @context.expects(:remove).with(@remote_file.path)
+      @remote_file.delete!
+    end
+  end
+
   describe 'set_permissions' do
     it "sets permissions on the file based on a mask" do
-      # @local_file.set_permissions(0664).must_equal @local_file
-      # @local_file.permissions.must_equal 0664
-      # @local_file.set_permissions(0644).must_equal @local_file
-      # @local_file.permissions.must_equal 0644
+      @context.expects(:run).with('chmod -R 644 /tmp/example.txt')
+      @context.expects(:run).with("stat --format=%a /tmp/example.txt").returns("644\n")
+      @remote_file.set_permissions(0644).must_equal @remote_file
+      @remote_file.permissions.must_equal 0644
     end
   end
 end

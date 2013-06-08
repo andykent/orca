@@ -19,8 +19,24 @@ class Hull::ExecutionContext
     @node.download(from, to)
   end
 
-  def fs
-    Hull::FileSystem.new(self)
+  def local(path)
+    Hull::LocalFile.new(path)
+  end
+
+  def remove(path)
+    @node.remove(path)
+  end
+
+  def stat(path)
+    @node.stat(path)
+  end
+
+  def setstat(path, opts)
+    @node.setstat(path, opts)
+  end
+
+  def remote(path)
+    Hull::RemoteFile.new(self, path)
   end
 
   def trigger(action_ref, *args)
@@ -39,5 +55,25 @@ end
 class Hull::MockExecutionContext < Hull::ExecutionContext
   def run(cmd)
     @node.log 'mock-execute', cmd
+  end
+
+  def upload(from, to)
+    @node.log('mock-sftp', "UPLOAD: #{from} => #{to}")
+  end
+
+  def download(from, to)
+    @node.log('mock-sftp', "DOWLOAD: #{from} => #{to}")
+  end
+
+  def remove(path)
+    @node.log('mock-sftp', "REMOVE: #{path}")
+  end
+
+  def stat(path)
+    @node.log('mock-sftp', "STAT: #{path}")
+  end
+
+  def setstat(path, opts)
+    @node.log('mock-sftp', "SET: #{path} - #{opts.inspect}")
   end
 end

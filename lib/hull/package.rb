@@ -1,9 +1,10 @@
 class Hull::Package
-  attr_reader :name, :dependancies, :actions
+  attr_reader :name, :dependancies, :actions, :children
 
   def initialize(name)
     @name = name
     @dependancies = []
+    @children = []
     @actions = {}
     @commands = {}
     @remove = nil
@@ -15,27 +16,41 @@ class Hull::Package
     end
   end
 
+  def triggers(*pkg_names)
+    pkg_names.each do |pkg_name|
+      @children << pkg_name
+    end
+  end
+
   def validate(&definition)
-    @commands[:validate] = definition
+    command(:validate, &definition)
   end
 
   def apply(&definition)
-    @commands[:apply] = definition
+    command(:apply, &definition)
   end
 
   def remove(&definition)
-    @commands[:remove] = definition
+    command(:remove, &definition)
   end
 
   def action(name, &definition)
     @actions[name] = definition
   end
 
-  def command(name)
-    @commands[name.to_sym]
+  def file(config)
+    Hull::FileSync.new(self, config).configure
+  end
+
+  def command(name, &definition)
+    if block_given?
+      (@commands[name.to_sym] ||= []) << definition
+    else
+      @commands[name.to_sym]
+    end
   end
 
   def provides_command?(name)
-    !command(name).nil?
+    @commands.has_key?(name.to_sym)
   end
 end

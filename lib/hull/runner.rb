@@ -25,7 +25,7 @@ class Hull::Runner
     return true unless @perform
     return true unless command_name == :apply || command_name == :remove
     return true unless pkg.provides_command?(:validate)
-    is_present = exec(pkg, :validate)
+    is_present = is_valid?(pkg)
     return !is_present if command_name == :apply
     return is_present
   end
@@ -33,8 +33,13 @@ class Hull::Runner
   def validate!(pkg)
     return true unless @perform
     return unless pkg.provides_command?(:validate)
-    return if exec(pkg, :validate)
+    return if is_valid?(pkg)
     raise "Package #{pkg.name} failed validation"
+  end
+
+  def is_valid?(pkg)
+    results = exec(pkg, :validate)
+    results.all?
   end
 
   def demonstrate(command_name)
@@ -46,7 +51,7 @@ class Hull::Runner
   def exec(pkg, command_name)
     @node.log pkg.name, command_name.to_s.yellow
     context = @perform ? Hull::ExecutionContext.new(@node) : Hull::MockExecutionContext.new(@node)
-    cmd = pkg.command(command_name)
-    context.apply(cmd)
+    cmds = pkg.command(command_name)
+    cmds.map {|cmd| context.apply(cmd) }
   end
 end

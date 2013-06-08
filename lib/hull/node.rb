@@ -30,8 +30,23 @@ class Hull::Node
     sftp.download!(from, to)
   end
 
+  def remove(path)
+    log('sftp', "REMOVE: #{path}")
+    sftp.remove!(path)
+  end
+
+  def stat(path)
+    log('sftp', "STAT: #{path}")
+    sftp.stat!(path)
+  end
+
+  def setstat(path, opts)
+    log('sftp', "SET: #{path} - #{opts.inspect}")
+    sftp.setstat!(path, opts)
+  end
+
   def sftp
-    @sftp ||= Net::SFTP::Session.new(connection)
+    @sftp ||= connection.sftp.connect
   end
 
   def execute(cmd)
@@ -61,5 +76,25 @@ end
 class Hull::MockNode
   def execute(cmd)
     log('execute', cmd)
+  end
+
+  def upload(from, to)
+    log('sftp', "UPLOAD: #{from} => #{to}")
+  end
+
+  def download(from, to)
+    log('sftp', "DOWLOAD: #{from} => #{to}")
+  end
+
+  def remove(path)
+    log('sftp', "REMOVE: #{path}")
+  end
+
+  def stat(path)
+    log('sftp', "STAT: #{path}")
+  end
+
+  def setstat(path, opts)
+    log('sftp', "SET: #{path} - #{opts.inspect}")
   end
 end

@@ -29,17 +29,17 @@ describe Hull::Package do
   describe "commands" do
     it "can add an 'apply' command" do
       @package.apply { 'my-apply' }
-      @package.command(:apply).call.must_equal 'my-apply'
+      @package.command(:apply).first.call.must_equal 'my-apply'
     end
 
     it "can add an 'remove' command" do
       @package.remove { 'my-remove' }
-      @package.command(:remove).call.must_equal 'my-remove'
+      @package.command(:remove).first.call.must_equal 'my-remove'
     end
 
     it "can add an 'validate' command" do
       @package.validate { 'my-validate' }
-      @package.command(:validate).call.must_equal 'my-validate'
+      @package.command(:validate).first.call.must_equal 'my-validate'
     end
 
     it 'knows if a command is provided' do

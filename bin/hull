@@ -1,20 +1,20 @@
 #!/usr/bin/env ruby
 require 'fileutils'
 
-hull_file = File.join(Dir.pwd, 'config', 'hull.rb')
+ENV['HULL_FILE'] ||= File.join(Dir.pwd, 'hull', 'hull.rb')
 
 arg_command = ARGV.shift
 
 if arg_command == 'init'
-  unless File.exists?(hull_file)
-    FileUtils.mkdir_p(File.join(Dir.pwd, 'config'))
-    local_copy = File.join(File.dirname(__FILE__), '..', 'config', 'hull.rb')
-    FileUtils.cp(local_copy, hull_file)
+  unless File.exists?(ENV['HULL_FILE'])
+    FileUtils.mkdir_p(File.join(Dir.pwd, 'hull'))
+    local_copy = File.join(File.dirname(__FILE__), '..', 'hull', 'hull.rb')
+    FileUtils.cp(local_copy, ENV['HULL_FILE'])
   end
 else
   require_relative "../lib/hull"
   include Hull::DSL
-  require hull_file
+  require ENV['HULL_FILE']
 
   arg_package = ARGV.shift
   arg_node    = ARGV.shift

@@ -5,7 +5,15 @@ class Hull::LocalFile
   attr_reader :path
 
   def initialize(path)
-    @path = path
+    @path = resolve(path)
+  end
+
+  def resolve(path)
+    if path =~ /^\//
+      path
+    else
+      File.join(Hull.root, path)
+    end
   end
 
   def hash

@@ -17,7 +17,19 @@ class Hull::Resolver
     @packages = @tree.flatten
     @packages.reverse!
     @packages.uniq!
+    add_children
     self
+  end
+
+  def add_children
+    @packages = @packages.reduce([]) do |arr, package|
+      arr << package
+      package.children.each do |child_name|
+        child = Hull::PackageIndex.default.get(child_name)
+        arr << child unless arr.include?(child)
+      end
+      arr
+    end
   end
 
   class CircularDependancyError < StandardError
