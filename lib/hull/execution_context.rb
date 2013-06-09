@@ -11,6 +11,10 @@ class Hull::ExecutionContext
     @node.execute(cmd)
   end
 
+  def sudo(cmd)
+    @node.sudo(cmd)
+  end
+
   def upload(from, to)
     @node.upload(from, to)
   end
@@ -55,6 +59,10 @@ end
 class Hull::MockExecutionContext < Hull::ExecutionContext
   def run(cmd)
     @node.log 'mock-execute', cmd
+  end
+
+  def sudo(cmd)
+    @node.log 'mock-execute', "sudo #{cmd}"
   end
 
   def upload(from, to)

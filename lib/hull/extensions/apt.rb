@@ -12,19 +12,19 @@ Hull.extension :apt do
 
   package 'apt' do
     action 'install' do |package_name|
-      run "DEBIAN_FRONTEND=noninteractive apt-get install -y -q #{package_name}"
+      sudo "DEBIAN_FRONTEND=noninteractive apt-get install -y -q #{package_name}"
     end
 
     action 'remove' do |package_name|
-      run "DEBIAN_FRONTEND=noninteractive apt-get remove -y -q #{package_name}"
+      sudo "DEBIAN_FRONTEND=noninteractive apt-get remove -y -q #{package_name}"
     end
 
     action 'ppa' do |repo|
-      run "DEBIAN_FRONTEND=noninteractive add-apt-repository #{repo} -y"
+      sudo "DEBIAN_FRONTEND=noninteractive add-apt-repository #{repo} -y"
     end
 
     action 'update' do
-      run "DEBIAN_FRONTEND=noninteractive apt-get update -y -qq"
+      sudo "DEBIAN_FRONTEND=noninteractive apt-get update -y -qq"
     end
 
     action 'exists' do |package_name|

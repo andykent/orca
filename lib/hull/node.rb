@@ -13,9 +13,10 @@ class Hull::Node
     @nodes[node.name] = node
   end
 
-  def initialize(name, host)
+  def initialize(name, host, options={})
     @name = name
     @host = host
+    @options = options
     @connection = nil
     Hull::Node.register(self)
   end
@@ -62,13 +63,17 @@ class Hull::Node
     output
   end
 
+  def sudo(cmd)
+    execute("sudo #{cmd}")
+  end
+
   def log(context, msg)
     puts "#{@host} [#{context.to_s.bold}] #{msg}"
   end
 
   def connection
     return @connection if @connection
-    @connetion = Net::SSH.start(@host, 'root')
+    @connetion = Net::SSH.start(@host, 'root', @options)
   end
 end
 
@@ -76,6 +81,10 @@ end
 class Hull::MockNode
   def execute(cmd)
     log('execute', cmd)
+  end
+
+  def sudo(cmd)
+    execute("sudo #{cmd}")
   end
 
   def upload(from, to)

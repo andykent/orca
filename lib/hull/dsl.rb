@@ -23,8 +23,8 @@ module Hull
       Hull.load_extension(name)
     end
 
-    def node(name, host)
-      Hull::Node.new(name, host)
+    def node(name, host, options={})
+      Hull::Node.new(name, host, options)
     end
   end
 end
