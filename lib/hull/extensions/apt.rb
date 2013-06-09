@@ -1,4 +1,5 @@
-module Hull::DSL
+Hull.extension :apt do
+
   def apt_package(pkg_name, apt_name=pkg_name, &blk)
     package pkg_name do
       depends_on 'apt'
@@ -46,4 +47,5 @@ module Hull::DSL
       trigger 'apt:remove', 'software-properties-common'
     end
   end
+
 end

@@ -1,3 +1,11 @@
+Hull.extension :file_sync do
+  class Hull::Package
+    def file(config)
+      Hull::FileSync.new(self, config).configure
+    end
+  end
+end
+
 class Hull::FileSync
   def initialize(parent, config)
     @parent = parent
@@ -72,10 +80,9 @@ class Hull::FileSync
   end
 
   def add_package(suffix)
-    package = Hull::Package.new(package_name(suffix))
+    package = Hull.add_package(package_name(suffix))
     yield(package)
     @parent.triggers(package.name)
-    Hull::PackageIndex.default.add(package)
     package
   end
 end

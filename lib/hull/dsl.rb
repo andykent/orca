@@ -2,9 +2,9 @@ module Hull
   module DSL
     module_function
     def package(name, &definition)
-      pkg = Hull::Package.new(name)
-      pkg.instance_eval(&definition)
-      Hull::PackageIndex.default.add(pkg)
+      Hull.add_package(name) do |pkg|
+        pkg.instance_eval(&definition)
+      end
     end
 
     def execute(node_name, pkg_name, command)
@@ -19,8 +19,8 @@ module Hull
       Hull::Runner.new(node, pkg).demonstrate(command)
     end
 
-    def load_package(name)
-      require_relative("./packages/#{name}")
+    def load_extension(name)
+      Hull.load_extension(name)
     end
 
     def node(name, host)

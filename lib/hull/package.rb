@@ -38,10 +38,6 @@ class Hull::Package
     @actions[name] = definition
   end
 
-  def file(config)
-    Hull::FileSync.new(self, config).configure
-  end
-
   def command(name, &definition)
     if block_given?
       (@commands[name.to_sym] ||= []) << definition

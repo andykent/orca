@@ -1,4 +1,4 @@
-module Hull::DSL
+Hull.extension :gem do
   def gem_package(pkg_name, gem_name=pkg_name)
     package pkg_name do
       depends_on 'gem' # should depend on Ruby but which???
