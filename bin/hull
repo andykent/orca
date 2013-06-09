@@ -12,18 +12,23 @@ if arg_command == 'init'
     FileUtils.cp(local_copy, ENV['HULL_FILE'])
   end
 else
-  require_relative "../lib/hull"
-  include Hull::DSL
-  require ENV['HULL_FILE']
 
-  arg_package = ARGV.shift
-  arg_node    = ARGV.shift
+  begin
+    require_relative "../lib/hull"
+    include Hull::DSL
+    require ENV['HULL_FILE']
 
-  if arg_command == 'apply'
-    execute(arg_node, arg_package, :apply)
-  elsif arg_command == 'remove'
-    execute(arg_node, arg_package, :remove)
-  else
-    demonstrate(arg_node, arg_package, :apply)
+    arg_package = ARGV.shift
+    arg_node    = ARGV.shift
+
+    if arg_command == 'apply'
+      execute(arg_node, arg_package, :apply)
+    elsif arg_command == 'remove'
+      execute(arg_node, arg_package, :remove)
+    else
+      demonstrate(arg_node, arg_package, :apply)
+    end
+  rescue => e
+    puts "!!! ERROR !!! [#{e.class.name}] #{e.message}".red.bold
   end
 end
