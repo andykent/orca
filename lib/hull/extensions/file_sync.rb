@@ -34,6 +34,10 @@ class Hull::FileSync
     @config[:group]
   end
 
+  def create_dir
+    @config[:create_dir] || @config[:create_dirs]
+  end
+
   def package_name(suffix)
     "file-#{suffix}[#{remote_path}]"
   end
@@ -48,6 +52,10 @@ class Hull::FileSync
     fs = self
     add_package('content') do |package|
       package.command :apply do
+        if fs.create_dir
+          mk_dir = fs.create_dir == true ? File.dirname(fs.remote_path) : fs.create_dir
+          run("mkdir -p #{mk_dir}")
+        end
         local(fs.local_path).copy_to(remote(fs.remote_path))
       end
 
