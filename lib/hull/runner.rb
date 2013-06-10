@@ -34,7 +34,7 @@ class Hull::Runner
     return true unless @perform
     return unless pkg.provides_command?(:validate)
     return if is_valid?(pkg)
-    raise "Package #{pkg.name} failed validation"
+    raise ValidationFailureError.new(@node, pkg)
   end
 
   def is_valid?(pkg)
@@ -53,5 +53,16 @@ class Hull::Runner
     context = @perform ? Hull::ExecutionContext.new(@node) : Hull::MockExecutionContext.new(@node)
     cmds = pkg.command(command_name)
     cmds.map {|cmd| context.apply(cmd) }
+  end
+
+  class ValidationFailureError
+    def initialize(node, package)
+      @node = node
+      @package = package
+    end
+
+    def message
+      "Package #{@package.name} failed validation on #{@node.to_s}"
+    end
   end
 end
