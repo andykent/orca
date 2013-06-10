@@ -68,12 +68,16 @@ class Hull::Node
   end
 
   def log(context, msg)
-    puts "#{@host} [#{context.to_s.bold}] #{msg}"
+    puts "#{self.to_s} [#{context.to_s.bold}] #{msg}"
   end
 
   def connection
     return @connection if @connection
-    @connetion = Net::SSH.start(@host, 'root', @options)
+    @connetion = Net::SSH.start(@host, (@options[:user] || 'root'), @options)
+  end
+
+  def to_s
+    "#{name}(#{host})"
   end
 end
 
