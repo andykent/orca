@@ -4,7 +4,10 @@ Hull.extension :apt do
     package pkg_name do
       depends_on 'apt'
       validate { trigger 'apt:exists', apt_name  }
-      apply    { trigger 'apt:install', apt_name }
+      apply    do
+        trigger 'apt:update'
+        trigger 'apt:install', apt_name
+      end
       remove   { trigger 'apt:remove', apt_name  }
       instance_eval(&blk) if blk
     end
