@@ -54,9 +54,13 @@ class Hull::FileSync
       package.command :apply do
         if fs.create_dir
           mk_dir = fs.create_dir == true ? File.dirname(fs.remote_path) : fs.create_dir
-          run("mkdir -p #{mk_dir}")
+          sudo("mkdir -p #{mk_dir}")
+          sudo("chown #{fs.user}:#{fs.group || fs.user} #{mk_dir}") if fs.user
         end
-        local(fs.local_path).copy_to(remote(fs.remote_path))
+        local_file = local(fs.local_path)
+        tmp_path = "hull-upload-#{local_file.hash}"
+        local_file.copy_to(remote(tmp_path))
+        sudo("mv #{tmp_path} #{fs.remote_path}")
       end
 
       package.command :remove do

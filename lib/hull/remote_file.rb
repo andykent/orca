@@ -42,7 +42,7 @@ class Hull::RemoteFile
   end
 
   def duplicate(destination)
-    @context.run("cp #{path} #{destination.path}")
+    @context.sudo("cp #{path} #{destination.path}")
     destination
   end
 
@@ -61,7 +61,7 @@ class Hull::RemoteFile
   end
 
   def set_permissions(mask)
-    @context.run("chmod -R #{sprintf("%o",mask)} #{path}")
+    @context.sudo("chmod -R #{sprintf("%o",mask)} #{path}")
     invalidate!
     self
   end
@@ -71,7 +71,7 @@ class Hull::RemoteFile
   end
 
   def set_owner(user, group=nil)
-    @context.run("chown -R #{user}:#{group} #{path}")
+    @context.sudo("chown -R #{user}:#{group} #{path}")
     invalidate!
     self
   end
