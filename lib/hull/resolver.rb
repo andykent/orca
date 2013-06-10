@@ -8,7 +8,7 @@ class Hull::Resolver
   end
 
   def resolve
-    dependancies = @package.dependancies.map { |d| Hull::PackageIndex.default.get(d) }
+    dependancies = @package.dependancies.reverse.map { |d| Hull::PackageIndex.default.get(d) }
     begin
       @tree += dependancies.map {|d| Hull::Resolver.new(d).resolve.tree }
     rescue SystemStackError
