@@ -1,5 +1,5 @@
 Hull.extension :apt do
-
+  module_function
   def apt_package(pkg_name, apt_name=pkg_name, &blk)
     package pkg_name do
       depends_on 'apt'
@@ -15,11 +15,11 @@ Hull.extension :apt do
 
   package 'apt' do
     action 'install' do |package_name|
-      sudo "DEBIAN_FRONTEND=noninteractive apt-get install -y -q #{package_name}"
+      sudo "DEBIAN_FRONTEND=noninteractive apt-get install -y -qq #{package_name}"
     end
 
     action 'remove' do |package_name|
-      sudo "DEBIAN_FRONTEND=noninteractive apt-get remove -y -q #{package_name}"
+      sudo "DEBIAN_FRONTEND=noninteractive apt-get remove -y -qq #{package_name}"
     end
 
     action 'ppa' do |repo|
@@ -40,9 +40,9 @@ Hull.extension :apt do
     end
 
     apply do
+      trigger 'apt:update'
       trigger 'apt:install', 'python-software-properties'
       trigger 'apt:install', 'software-properties-common'
-      trigger 'apt:update'
     end
 
     remove do

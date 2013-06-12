@@ -80,34 +80,3 @@ class Hull::Node
     "#{name}(#{host})"
   end
 end
-
-
-class Hull::MockNode
-  def execute(cmd)
-    log('execute', cmd)
-  end
-
-  def sudo(cmd)
-    execute("sudo #{cmd}")
-  end
-
-  def upload(from, to)
-    log('sftp', "UPLOAD: #{from} => #{to}")
-  end
-
-  def download(from, to)
-    log('sftp', "DOWLOAD: #{from} => #{to}")
-  end
-
-  def remove(path)
-    log('sftp', "REMOVE: #{path}")
-  end
-
-  def stat(path)
-    log('sftp', "STAT: #{path}")
-  end
-
-  def setstat(path, opts)
-    log('sftp', "SET: #{path} - #{opts.inspect}")
-  end
-end

@@ -14,4 +14,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency('colored')
   gem.add_dependency('net-ssh')
   gem.add_dependency('net-sftp')
+  gem.add_dependency('thor')
 end

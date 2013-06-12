@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'bundler/setup'
 require 'colored'
 
 module Hull
@@ -15,17 +17,9 @@ module Hull
   module_function :add_package
 
   def extension(name, &blk)
-    @extensions ||= {}
-    @extensions[name.to_sym] = blk
+    Hull::DSL.class_eval(&blk)
   end
   module_function :extension
-
-  def load_extension(name)
-    raise MissingExtensionError.new(name) unless @extensions && @extensions[name.to_sym]
-    Hull::DSL.class_eval(&@extensions[name.to_sym])
-    true
-  end
-  module_function :load_extension
 
   class MissingExtensionError < StandardError
     def initialize(extension_name)
@@ -47,7 +41,8 @@ require_relative "./hull/execution_context"
 require_relative "./hull/local_file"
 require_relative "./hull/remote_file"
 require_relative "./hull/dsl"
+require_relative "./hull/suite"
+require_relative "./hull/cli"
 
 require_relative "./hull/extensions/apt"
 require_relative "./hull/extensions/file_sync"
-require_relative "./hull/extensions/gem"

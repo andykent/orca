@@ -1,34 +1,9 @@
 #!/usr/bin/env ruby
 require 'fileutils'
+require 'rubygems'
+require 'bundler/setup'
+require 'thor'
 
-ENV['HULL_FILE'] ||= File.join(Dir.pwd, 'hull', 'hull.rb')
+require_relative "../lib/hull"
 
-arg_command = ARGV.shift
-
-if arg_command == 'init'
-  unless File.exists?(ENV['HULL_FILE'])
-    FileUtils.mkdir_p(File.join(Dir.pwd, 'hull'))
-    local_copy = File.join(File.dirname(__FILE__), '..', 'hull', 'hull.rb')
-    FileUtils.cp(local_copy, ENV['HULL_FILE'])
-  end
-else
-
-  begin
-    require_relative "../lib/hull"
-    include Hull::DSL
-    require ENV['HULL_FILE']
-
-    arg_package = ARGV.shift
-    arg_node    = ARGV.shift
-
-    if arg_command == 'apply'
-      execute(arg_node, arg_package, :apply)
-    elsif arg_command == 'remove'
-      execute(arg_node, arg_package, :remove)
-    else
-      demonstrate(arg_node, arg_package, :apply)
-    end
-  rescue => e
-    puts "!!! ERROR !!! [#{e.class.name}] #{e.message}".red.bold
-  end
-end
+Hull::Cli.start(ARGV)

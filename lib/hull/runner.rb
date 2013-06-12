@@ -14,10 +14,23 @@ class Hull::Runner
   def execute(command_name)
     @node.log command_name, packages.map(&:name).join(', ').yellow
     packages.each do |pkg|
-      next unless should_run?(pkg, command_name)
-      exec(pkg, command_name)
-      validate!(pkg) if command_name == :apply
+      send(:"execute_#{command_name}", pkg)
     end
+  end
+
+  def execute_apply(pkg)
+    return unless should_run?(pkg, :apply)
+    exec(pkg, command_name)
+    validate!(pkg)
+  end
+
+  def execute_remove(pkg)
+    return unless should_run?(pkg, :remove)
+    exec(pkg, command_name)
+  end
+
+  def execute_validate(pkg)
+    validate!(pkg)
   end
 
   def should_run?(pkg, command_name)
@@ -55,7 +68,7 @@ class Hull::Runner
     cmds.map {|cmd| context.apply(cmd) }
   end
 
-  class ValidationFailureError
+  class ValidationFailureError < StandardError
     def initialize(node, package)
       @node = node
       @package = package
