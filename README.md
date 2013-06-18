@@ -3,7 +3,7 @@ Orca
 
 **Because building servers shouldn't be a PITA.**
 
-Orca is a super simple implementation of infrastructure as code prinicples.
+Orca is a super simple way to build and configure servers.
 
 If you've found yourself stuck in the gap between deployment tools like Capistrano and full blown infrastructure tools like Puppet and Chef then Orca is probably for you.
 
@@ -11,7 +11,7 @@ If you've found yourself stuck in the gap between deployment tools like Capistra
 What problem does Orca try to solve?
 ------------------------------------
 
-All too often you need to get a new server up and running to a known state so that you can get an app deployed. Before Orca there were largely 4 options...
+All too often you need to get a new server up and running to a known state so that you can get an app deployed. Before Orca there were boardly 4 options...
 
 1. Start from scratch and hand install all the packages, files, permissions, etc. Yourself via trial and error over SSH.
 2. Use a deployment tool like Capistrano to codeify your shell scripts into semi-reusable steps.
@@ -28,9 +28,10 @@ Orca fills the rather large gap between (2) and (3). It's a bigger gap then you 
 Orca fixes these problems by...
 
 - working directly over SSH, all you need is a box tht you can connect to
-- package definitions all go in a single file and most servers can be configured in ~50 lines
-- packages are defined in a ruby based DSL that consists of only 5 commands to learn
+- package definitions can all go in a single file and most servers can be configured in ~50 lines
+- packages are defined in a ruby based DSL that consists of only 5 very basic commands to learn
 - Orca makes no assumptions about the underlying OS accept to assume it supports SSH
+- Orca is extensible and adding platform specific features like package manger support can be achieved in a dozen or so lines.
 
 
 What problems is Orca avoiding?
@@ -63,7 +64,7 @@ To get started from within your projct you can run...
 
 This will create a config/orca.rb file for you to get started with.
 
-To ship a run a command the syntax is as follows...
+To ship run a command the syntax is as follows...
 
     orca [command] [package] [node]
 
@@ -77,7 +78,7 @@ So here are some examples (assuming you have a package called "app" and a node c
 The Orca DSL
 ------------
 
-Orca packages are written in a Ruby based DSL. It's really simple to learn in less than 5 mins. Here's an example orca.rb file with all you need to know...
+Orca packages are written in a Ruby based DSL. It's really simple to learn in less than 5 mins. Here's an example orca.rb file with all you'll need to know to get started...
 
     # define a new pacage called 'gem' that provides some actions for managing rubygems
     package 'gem' do
