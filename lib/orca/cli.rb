@@ -1,4 +1,8 @@
 class Orca::Cli < Thor
+  include Thor::Actions
+
+  source_root File.join(File.dirname(__FILE__), *%w[.. .. config])
+
   class_option :demonstrate, :type => :boolean, :desc => "Don't actually run any commands on the node, just pretend."
   class_option :file,        :banner => 'ORCA_FILE', :desc => "path to the orca.rb file to load, defaults to ./orca/orca.rb"
   class_option :throw,       :type => :boolean, :desc => "Don't pretty print errors, raise with a stack trace."
@@ -16,6 +20,11 @@ class Orca::Cli < Thor
   desc "validate PACKAGE_NAME NODE_NAME", "run validation steps on the given named node"
   def validate(package, node)
     run_command(package, node, :validate)
+  end
+
+  desc "init", "initialize the current directory with a orca/orca.rb"
+  def init
+    directory('template', 'orca')
   end
 
   private
