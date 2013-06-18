@@ -39,7 +39,7 @@ describe Hull::Resolver do
       @pkg_a.depends_on(@pkg_c.name)
       resolver = Hull::Resolver.new(@pkg_a)
       resolver.resolve
-      resolver.packages.must_equal [@pkg_c, @pkg_b, @pkg_a]
+      resolver.packages.must_equal [@pkg_b, @pkg_c, @pkg_a]
     end
 
     it "resolves a tree of 4 packages to a list of 4 packages" do
@@ -48,7 +48,7 @@ describe Hull::Resolver do
       @pkg_c.depends_on(@pkg_d.name)
       resolver = Hull::Resolver.new(@pkg_a)
       resolver.resolve
-      resolver.packages.must_equal [@pkg_d, @pkg_c, @pkg_b, @pkg_a]
+      resolver.packages.must_equal [@pkg_b, @pkg_d, @pkg_c, @pkg_a]
     end
 
     it "errors out on circular dependancies" do

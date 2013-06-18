@@ -59,7 +59,7 @@ describe Hull::RemoteFile do
     it "copies a file to another remote location" do
       @remote_destination_context = mock()
       @remote_destination = Hull::RemoteFile.new(@remote_destination_context, "/tmp/example-dest.txt")
-      @context.expects(:run)
+      @context.expects(:sudo)
               .with(%[cp #{@remote_file.path} #{@remote_destination.path}])
               .returns("true\n")
       @remote_file.copy_to(@remote_destination).must_equal @remote_destination
@@ -82,7 +82,7 @@ describe Hull::RemoteFile do
 
   describe 'set_permissions' do
     it "sets permissions on the file based on a mask" do
-      @context.expects(:run).with('chmod -R 644 /tmp/example.txt')
+      @context.expects(:sudo).with('chmod -R 644 /tmp/example.txt')
       @context.expects(:run).with("stat --format=%a /tmp/example.txt").returns("644\n")
       @remote_file.set_permissions(0644).must_equal @remote_file
       @remote_file.permissions.must_equal 0644

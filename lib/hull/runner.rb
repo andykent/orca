@@ -20,13 +20,13 @@ class Hull::Runner
 
   def execute_apply(pkg)
     return unless should_run?(pkg, :apply)
-    exec(pkg, command_name)
+    exec(pkg, :apply)
     validate!(pkg)
   end
 
   def execute_remove(pkg)
     return unless should_run?(pkg, :remove)
-    exec(pkg, command_name)
+    exec(pkg, :remove)
   end
 
   def execute_validate(pkg)

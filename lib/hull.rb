@@ -1,6 +1,6 @@
 require 'rubygems'
-require 'bundler/setup'
 require 'colored'
+require 'thor'
 
 module Hull
   def root

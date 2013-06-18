@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 require 'fileutils'
-require 'rubygems'
-require 'bundler/setup'
-require 'thor'
 
 require_relative "../lib/hull"
 
