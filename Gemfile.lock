@@ -24,6 +24,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  orca!
   mocha
+  orca!
   rake
