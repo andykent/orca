@@ -1,12 +1,12 @@
 require_relative 'test_helper'
 
-describe Hull::RemoteFile do
+describe Orca::RemoteFile do
   before :each do
     @local_file_path = File.join(File.dirname(__FILE__), 'fixtures', 'example.txt')
-    @local_file = Hull::LocalFile.new(@local_file_path)
+    @local_file = Orca::LocalFile.new(@local_file_path)
     @remote_file_path = '/tmp/example.txt'
     @context = mock()
-    @remote_file = Hull::RemoteFile.new(@context, @remote_file_path)
+    @remote_file = Orca::RemoteFile.new(@context, @remote_file_path)
   end
 
   describe 'path' do
@@ -58,7 +58,7 @@ describe Hull::RemoteFile do
   describe 'copy_to' do
     it "copies a file to another remote location" do
       @remote_destination_context = mock()
-      @remote_destination = Hull::RemoteFile.new(@remote_destination_context, "/tmp/example-dest.txt")
+      @remote_destination = Orca::RemoteFile.new(@remote_destination_context, "/tmp/example-dest.txt")
       @context.expects(:sudo)
               .with(%[cp #{@remote_file.path} #{@remote_destination.path}])
               .returns("true\n")
@@ -66,7 +66,7 @@ describe Hull::RemoteFile do
     end
 
     it "copies a file to local location by downlaoding it" do
-      @local_destination = Hull::LocalFile.new("/tmp/example-#{Time.now.to_i}.txt")
+      @local_destination = Orca::LocalFile.new("/tmp/example-#{Time.now.to_i}.txt")
       @context.expects(:download)
               .with(@remote_file_path, @local_destination.path)
       @remote_file.copy_to(@local_destination).must_equal @local_destination

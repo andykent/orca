@@ -1,6 +1,6 @@
-# This is an example Hull configuration file
+# This is an example Orca configuration file
 # You will need to edit or define for youself at
-# least one node and one package for hull to work.
+# least one node and one package for orca to work.
 
 
 # Define at least one or more nodes where you want

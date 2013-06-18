@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'fileutils'
 
-require_relative "../lib/hull"
+require_relative "../lib/orca"
 
-Hull::Cli.start(ARGV)
+Orca::Cli.start(ARGV)

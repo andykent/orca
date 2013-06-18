@@ -1,6 +1,6 @@
-class Hull::Cli < Thor
+class Orca::Cli < Thor
   class_option :demonstrate, :type => :boolean, :desc => "Don't actually run any commands on the node, just pretend."
-  class_option :file,        :banner => 'HULL_FILE', :desc => "path to the hull.rb file to load, defaults to ./hull/hull.rb"
+  class_option :file,        :banner => 'HULL_FILE', :desc => "path to the orca.rb file to load, defaults to ./orca/orca.rb"
   class_option :throw,       :type => :boolean, :desc => "Don't pretty print errors, raise with a stack trace."
 
   desc "apply PACKAGE_NAME NODE_NAME", "apply the given package onto the given named node"
@@ -22,8 +22,8 @@ class Hull::Cli < Thor
 
   def run_command(package, node, cmd)
     begin
-      suite = Hull::Suite.new
-      suite.load_file(hull_file)
+      suite = Orca::Suite.new
+      suite.load_file(orca_file)
       if options[:demonstrate]
         suite.demonstrate(node, package, cmd)
       else
@@ -38,7 +38,7 @@ class Hull::Cli < Thor
     end
   end
 
-  def hull_file
-    ENV['HULL_FILE'] ||= (options[:file] || File.join(Dir.pwd, 'hull', 'hull.rb'))
+  def orca_file
+    ENV['HULL_FILE'] ||= (options[:file] || File.join(Dir.pwd, 'orca', 'orca.rb'))
   end
 end

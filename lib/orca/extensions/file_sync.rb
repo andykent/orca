@@ -1,12 +1,12 @@
-Hull.extension :file_sync do
-  class Hull::Package
+Orca.extension :file_sync do
+  class Orca::Package
     def file(config)
-      Hull::FileSync.new(self, config).configure
+      Orca::FileSync.new(self, config).configure
     end
   end
 end
 
-class Hull::FileSync
+class Orca::FileSync
   def initialize(parent, config)
     @parent = parent
     @config = config
@@ -58,7 +58,7 @@ class Hull::FileSync
           sudo("chown #{fs.user}:#{fs.group || fs.user} #{mk_dir}") if fs.user
         end
         local_file = local(fs.local_path)
-        tmp_path = "hull-upload-#{local_file.hash}"
+        tmp_path = "orca-upload-#{local_file.hash}"
         local_file.copy_to(remote(tmp_path))
         sudo("mv #{tmp_path} #{fs.remote_path}")
       end
@@ -92,7 +92,7 @@ class Hull::FileSync
   end
 
   def add_package(suffix)
-    package = Hull.add_package(package_name(suffix))
+    package = Orca.add_package(package_name(suffix))
     yield(package)
     @parent.triggers(package.name)
     package

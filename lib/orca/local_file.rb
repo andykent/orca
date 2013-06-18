@@ -1,7 +1,7 @@
 require 'digest/sha1'
 require 'fileutils'
 
-class Hull::LocalFile
+class Orca::LocalFile
   attr_reader :path
 
   def initialize(path)
@@ -12,7 +12,7 @@ class Hull::LocalFile
     if path =~ /^\//
       path
     else
-      File.join(Hull.root, path)
+      File.join(Orca.root, path)
     end
   end
 

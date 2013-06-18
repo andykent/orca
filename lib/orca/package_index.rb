@@ -1,4 +1,4 @@
-class Hull::PackageIndex
+class Orca::PackageIndex
   attr_reader :index_name
 
   def initialize(index_name)

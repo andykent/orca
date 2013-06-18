@@ -1,9 +1,9 @@
 require_relative 'test_helper'
 
-describe Hull::LocalFile do
+describe Orca::LocalFile do
   before :each do
     @local_file_path = File.join(File.dirname(__FILE__), 'fixtures', 'example.txt')
-    @local_file = Hull::LocalFile.new(@local_file_path)
+    @local_file = Orca::LocalFile.new(@local_file_path)
   end
 
   describe 'path' do
@@ -31,7 +31,7 @@ describe Hull::LocalFile do
   end
 
   describe 'copy_to' do
-    before(:each) { @destination = Hull::LocalFile.new("/tmp/example-#{Time.now.to_i}.txt") }
+    before(:each) { @destination = Orca::LocalFile.new("/tmp/example-#{Time.now.to_i}.txt") }
     after(:each)  { @destination.delete! }
 
     it "copies a file to another local location" do
@@ -42,7 +42,7 @@ describe Hull::LocalFile do
 
     it "copies a file to a remote location by uploading it" do
       @remote_destination_context = mock()
-      @remote_destination = Hull::RemoteFile.new(@remote_destination_context, "/tmp/example-dest.txt")
+      @remote_destination = Orca::RemoteFile.new(@remote_destination_context, "/tmp/example-dest.txt")
       @remote_destination_context.expects(:upload).with(@local_file.path, @remote_destination.path)
       @local_file.copy_to(@remote_destination).must_equal @remote_destination
     end

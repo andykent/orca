@@ -1,7 +1,7 @@
 require 'net/ssh'
 require 'net/sftp'
 
-class Hull::Node
+class Orca::Node
   attr_reader :name, :host
 
   def self.find(name)
@@ -18,7 +18,7 @@ class Hull::Node
     @host = host
     @options = options
     @connection = nil
-    Hull::Node.register(self)
+    Orca::Node.register(self)
   end
 
   def upload(from, to)

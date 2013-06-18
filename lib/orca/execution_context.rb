@@ -1,4 +1,4 @@
-class Hull::ExecutionContext
+class Orca::ExecutionContext
   def initialize(node)
     @node = node
   end
@@ -24,7 +24,7 @@ class Hull::ExecutionContext
   end
 
   def local(path)
-    Hull::LocalFile.new(path)
+    Orca::LocalFile.new(path)
   end
 
   def remove(path)
@@ -40,12 +40,12 @@ class Hull::ExecutionContext
   end
 
   def remote(path)
-    Hull::RemoteFile.new(self, path)
+    Orca::RemoteFile.new(self, path)
   end
 
   def trigger(action_ref, *args)
     pkg_name, action_name = *action_ref.split(':', 2)
-    pkg = Hull::PackageIndex.default.get(pkg_name)
+    pkg = Orca::PackageIndex.default.get(pkg_name)
     action = pkg.actions[action_name]
     raise "Action #{action_ref} could not be found." unless action
     instance_exec(*args, &action)
@@ -56,7 +56,7 @@ class Hull::ExecutionContext
   end
 end
 
-class Hull::MockExecutionContext < Hull::ExecutionContext
+class Orca::MockExecutionContext < Orca::ExecutionContext
   def run(cmd)
     @node.log 'mock-execute', cmd
     ''

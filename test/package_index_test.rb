@@ -1,9 +1,9 @@
 require_relative 'test_helper'
 
-describe Hull::PackageIndex do
+describe Orca::PackageIndex do
   before :each do
-    @package = Hull::Package.new('my-package')
-    @default = Hull::PackageIndex.default
+    @package = Orca::Package.new('my-package')
+    @default = Orca::PackageIndex.default
   end
 
   after :each do
@@ -12,11 +12,11 @@ describe Hull::PackageIndex do
 
   describe "default" do
     it "returns a package index singleton named default" do
-      Hull::PackageIndex.default.index_name.must_equal 'default'
+      Orca::PackageIndex.default.index_name.must_equal 'default'
     end
 
     it "allways returns the same package index" do
-      Hull::PackageIndex.default.must_equal Hull::PackageIndex.default
+      Orca::PackageIndex.default.must_equal Orca::PackageIndex.default
     end
   end
 
@@ -34,7 +34,7 @@ describe Hull::PackageIndex do
     end
 
     it "throws an execption if the package doesn't exist" do
-      assert_raises(Hull::PackageIndex::MissingPackageError) { @default.get(@package.name) }
+      assert_raises(Orca::PackageIndex::MissingPackageError) { @default.get(@package.name) }
     end
   end
 
@@ -42,7 +42,7 @@ describe Hull::PackageIndex do
     it "wipes the index clean of packages" do
       @default.add(@package)
       @default.clear!
-      assert_raises(Hull::PackageIndex::MissingPackageError) { @default.get(@package.name) }
+      assert_raises(Orca::PackageIndex::MissingPackageError) { @default.get(@package.name) }
     end
   end
 end

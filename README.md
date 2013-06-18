@@ -1,44 +1,44 @@
-Hull
+Orca
 ====
 
 **Because building servers shouldn't be a PITA.**
 
-Hull is a super simple implementation of infrastructure as code prinicples.
+Orca is a super simple implementation of infrastructure as code prinicples.
 
-If you've found yourself stuck in the gap between deployment tools like Capistrano and full blown infrastructure tools like Puppet and Chef then Hull is probably for you.
+If you've found yourself stuck in the gap between deployment tools like Capistrano and full blown infrastructure tools like Puppet and Chef then Orca is probably for you.
 
 
-What problem does Hull try to solve?
+What problem does Orca try to solve?
 ------------------------------------
 
-All too often you need to get a new server up and running to a known state so that you can get an app deployed. Before Hull there were largely 4 options...
+All too often you need to get a new server up and running to a known state so that you can get an app deployed. Before Orca there were largely 4 options...
 
 1. Start from scratch and hand install all the packages, files, permissions, etc. Yourself via trial and error over SSH.
 2. Use a deployment tool like Capistrano to codeify your shell scripts into semi-reusable steps.
 3. Use Puppet or Chef in single machine mode.
 4. Use Full blown Puppet or Chef, this requires a server.
 
-Hull fills the rather large gap between (2) and (3). It's a bigger gap then you think as both Puppet and Chef require...
+Orca fills the rather large gap between (2) and (3). It's a bigger gap then you think as both Puppet and Chef require...
 
 - bootstrapping a machine to a point where you are able to run them
 - Creating a seperate repository describing the configuration you require
 - learning their complex syntaxes and structures
 - hiding the differences of different host OSes
 
-Hull fixes these problems by...
+Orca fixes these problems by...
 
 - working directly over SSH, all you need is a box tht you can connect to
 - package definitions all go in a single file and most servers can be configured in ~50 lines
 - packages are defined in a ruby based DSL that consists of only 5 commands to learn
-- Hull makes no assumptions about the underlying OS accept to assume it supports SSH
+- Orca makes no assumptions about the underlying OS accept to assume it supports SSH
 
 
-What problems is Hull avoiding?
+What problems is Orca avoiding?
 -------------------------------
 
-Hull intentionally skirts around some important thengs that may or may not matter to you. If they do then you are probably better using more robust tools such as Puppet or Chef.
+Orca intentionally skirts around some important thengs that may or may not matter to you. If they do then you are probably better using more robust tools such as Puppet or Chef.
 
-Hull doesn't...
+Orca doesn't...
 
 - try to scale beyond a smallish number of nodes
 - have any algorithyms that attempt to run periodically and converge divergent configurations
@@ -49,9 +49,9 @@ Hull doesn't...
 Installation
 ------------
 
-To install hull you will need to be running Ruby 1.9 or 2.0 and then install the hull gem from this repository...
+To install orca you will need to be running Ruby 1.9 or 2.0 and then install the orca gem from this repository...
 
-    gem 'hull', :git => 'git@github.com:andykent/hull.git'
+    gem 'orca', :git => 'git@github.com:andykent/orca.git'
 
 
 Command Line Usage
@@ -59,25 +59,25 @@ Command Line Usage
 
 To get started from within your projct you can run...
 
-    bundle exec hull init .
+    bundle exec orca init .
 
-This will create a config/hull.rb file for you to get started with.
+This will create a config/orca.rb file for you to get started with.
 
 To ship a run a command the syntax is as follows...
 
-    hull [command] [package] [node]
+    orca [command] [package] [node]
 
-So here are some examples (assuming you have a package called "app" and a node called "server" defined in your hull.rb)...
+So here are some examples (assuming you have a package called "app" and a node called "server" defined in your orca.rb)...
 
-    hull apply app server
-    hull remove app server
-    hull demonstrate app server
+    orca apply app server
+    orca remove app server
+    orca demonstrate app server
 
 
-The Hull DSL
+The Orca DSL
 ------------
 
-Hull packages are written in a Ruby based DSL. It's really simple to learn in less than 5 mins. Here's an example hull.rb file with all you need to know...
+Orca packages are written in a Ruby based DSL. It's really simple to learn in less than 5 mins. Here's an example orca.rb file with all you need to know...
 
     # define a new pacage called 'gem' that provides some actions for managing rubygems
     package 'gem' do

@@ -1,4 +1,4 @@
-class Hull::Runner
+class Orca::Runner
   def initialize(node, package)
     @node = node
     @package = package
@@ -6,7 +6,7 @@ class Hull::Runner
   end
 
   def packages
-    resolver = Hull::Resolver.new(@package)
+    resolver = Orca::Resolver.new(@package)
     resolver.resolve
     resolver.packages
   end
@@ -63,7 +63,7 @@ class Hull::Runner
 
   def exec(pkg, command_name)
     @node.log pkg.name, command_name.to_s.yellow
-    context = @perform ? Hull::ExecutionContext.new(@node) : Hull::MockExecutionContext.new(@node)
+    context = @perform ? Orca::ExecutionContext.new(@node) : Orca::MockExecutionContext.new(@node)
     cmds = pkg.command(command_name)
     cmds.map {|cmd| context.apply(cmd) }
   end

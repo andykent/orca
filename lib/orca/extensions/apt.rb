@@ -1,4 +1,4 @@
-Hull.extension :apt do
+Orca.extension :apt do
   module_function
   def apt_package(pkg_name, apt_name=pkg_name, &blk)
     package pkg_name do

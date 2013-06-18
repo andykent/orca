@@ -1,4 +1,4 @@
-class Hull::Package
+class Orca::Package
   attr_reader :name, :dependancies, :actions, :children
 
   def initialize(name)

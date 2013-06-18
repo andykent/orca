@@ -1,8 +1,8 @@
 require_relative 'test_helper'
 
-describe Hull::Package do
+describe Orca::Package do
   before :each do
-    @package = Hull::Package.new('my-package')
+    @package = Orca::Package.new('my-package')
   end
 
   describe "depends_on" do

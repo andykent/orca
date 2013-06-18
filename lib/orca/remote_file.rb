@@ -1,7 +1,7 @@
 require 'digest/sha1'
 require 'fileutils'
 
-class Hull::RemoteFile
+class Orca::RemoteFile
   attr_reader :path
 
   def initialize(context, path)
