@@ -5,6 +5,7 @@ class Orca::Node
   attr_reader :name, :host
 
   def self.find(name)
+    return name if name.is_a?(Orca::Node)
     @nodes[name]
   end
 
