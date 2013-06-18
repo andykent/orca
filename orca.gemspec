@@ -1,7 +1,7 @@
 Gem::Specification.new do |gem|
   gem.authors       = ["Andy Kent"]
   gem.email         = ["andy.kent@me.com"]
-  gem.description   = %q{Simplified Machine Building}
+  gem.description   = %q{Orca is a super simple way to build and configure servers}
   gem.summary       = %q{Simplified Machine Building}
   gem.homepage      = ""
 
