@@ -50,9 +50,13 @@ Orca doesn't...
 Installation
 ------------
 
-To install orca you will need to be running Ruby 1.9 or 2.0 and then install the orca gem from this repository...
+To install orca you will need to be running Ruby 1.9 or 2.0 and then install the orca gem...
 
-    gem 'orca', :git => 'git@github.com:andykent/orca.git'
+    gem install orca
+
+or ideally add it to your gemfile...
+
+    gem 'orca'
 
 
 Command Line Usage
@@ -60,7 +64,7 @@ Command Line Usage
 
 To get started from within your projct you can run...
 
-    bundle exec orca init .
+    orca init .
 
 This will create a config/orca.rb file for you to get started with.
 
@@ -107,3 +111,15 @@ Orca packages are written in a Ruby based DSL. It's really simple to learn in le
         trigger('gem:exists', 'bundler')
       end
     end
+
+
+Extras
+------
+
+*Vagrant Provisioner Plugin*
+https://github.com/andykent/vagrant-orca
+Allows you to completely provision a machine with `vagrant up`
+
+*Ubuntu Extensions* - coming soon!
+https://github.com/andykent/orca-ubuntu
+Some ubuntu specific helpers for managing apt packages and keeping files in sync.
