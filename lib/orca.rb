@@ -4,7 +4,7 @@ require 'thor'
 
 module Orca
   def root
-    File.dirname(ENV['HULL_FILE'])
+    File.dirname(ENV['ORCA_FILE'])
   end
   module_function :root
 

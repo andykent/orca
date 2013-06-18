@@ -1,6 +1,6 @@
 class Orca::Cli < Thor
   class_option :demonstrate, :type => :boolean, :desc => "Don't actually run any commands on the node, just pretend."
-  class_option :file,        :banner => 'HULL_FILE', :desc => "path to the orca.rb file to load, defaults to ./orca/orca.rb"
+  class_option :file,        :banner => 'ORCA_FILE', :desc => "path to the orca.rb file to load, defaults to ./orca/orca.rb"
   class_option :throw,       :type => :boolean, :desc => "Don't pretty print errors, raise with a stack trace."
 
   desc "apply PACKAGE_NAME NODE_NAME", "apply the given package onto the given named node"
@@ -39,6 +39,6 @@ class Orca::Cli < Thor
   end
 
   def orca_file
-    ENV['HULL_FILE'] ||= (options[:file] || File.join(Dir.pwd, 'orca', 'orca.rb'))
+    ENV['ORCA_FILE'] ||= (options[:file] || File.join(Dir.pwd, 'orca', 'orca.rb'))
   end
 end
