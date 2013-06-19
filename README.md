@@ -42,7 +42,7 @@ Orca intentionally skirts around some important thengs that may or may not matte
 Orca doesn't...
 
 - try to scale beyond a smallish number of nodes
-- have any algorithyms that attempt to run periodically and converge divergent configurations
+- have any algorithms that attempt to run periodically and converge divergent configurations
 - abstract the differences of different host OSes
 - provide a server to supervise infrastructure configuration
 
