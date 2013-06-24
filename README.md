@@ -5,7 +5,7 @@ Orca
 
 Orca is a super simple way to build and configure servers.
 
-If you've found yourself stuck in the gap between deployment tools like Capistrano and full blown infrastructure tools like Puppet and Chef then Orca is probably for you.
+If you've found yourself stuck in the gap between deployment tools like Capistrano and full blown infrastructure tools like Puppet and Chef then Orca is probably for you. This is especially the case if you choose to cycle machines and prefer baking from scratch when changes are required rather than attempting to converge system state (although you can build convergent systems using Orca if you wish).
 
 
 What problem does Orca try to solve?
