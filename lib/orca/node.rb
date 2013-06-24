@@ -70,7 +70,7 @@ class Orca::Node
   end
 
   def log(context, msg)
-    puts "#{self.to_s} [#{context.to_s.bold}] #{msg}"
+    Thread.exclusive { puts "#{self.to_s} [#{context.to_s.bold}] #{msg}" }
   end
 
   def connection
