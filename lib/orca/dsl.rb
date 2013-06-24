@@ -14,5 +14,10 @@ module Orca
     def node(name, host, options={})
       Orca::Node.new(name, host, options)
     end
+
+    def group(name, nodes=[], &blk)
+      g = Orca::Group.new(name, nodes)
+      g.instance_eval(&blk) if block_given?
+    end
   end
 end

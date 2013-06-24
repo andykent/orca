@@ -32,4 +32,20 @@ describe Orca::DSL do
       node.host.must_equal 'node-host'
     end
   end
+
+  describe "'group' command" do
+    it "creates a group" do
+      Orca::DSL.group('group-name')
+      group = Orca::Group.find('group-name')
+      group.must_be_instance_of Orca::Group
+      group.name.must_equal 'group-name'
+    end
+
+    it "evals in the group context" do
+      node = mock
+      Orca::DSL.group('group-name') { add_node(node) }
+      group = Orca::Group.find('group-name')
+      group.nodes.must_equal [node]
+    end
+  end
 end
