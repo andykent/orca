@@ -113,13 +113,22 @@ Orca packages are written in a Ruby based DSL. It's really simple to learn in le
     end
 
 
+
+Extensions
+----------
+
+The core of Orca doesn't have any platform specific logic but is designed to be a foundation to build apon. Extensions can be written in their own files, projects or gems, simply `require 'orca'` and then use the `Orca.extension` helper.
+
+Some example extensions are included in this repo and can be required into your orca.rb file if you need them...
+
+`require "orca/extensions/apt"` - Adds support for specifying aptitude dependancies with the `apt_package` helper.
+
+`relative "orca/extensions/file_sync"` - Adds support for syncing and converging local/remove files with the `file` action.
+
+
 Extras
 ------
 
 *Vagrant Provisioner Plugin*
 https://github.com/andykent/vagrant-orca
 Allows you to completely provision a machine with `vagrant up`
-
-*Ubuntu Extensions* - coming soon!
-https://github.com/andykent/orca-ubuntu
-Some ubuntu specific helpers for managing apt packages and keeping files in sync.

@@ -43,6 +43,3 @@ require_relative "./orca/remote_file"
 require_relative "./orca/dsl"
 require_relative "./orca/suite"
 require_relative "./orca/cli"
-
-require_relative "./orca/extensions/apt"
-require_relative "./orca/extensions/file_sync"
