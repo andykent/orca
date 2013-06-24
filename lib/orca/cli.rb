@@ -3,23 +3,23 @@ class Orca::Cli < Thor
 
   source_root File.join(File.dirname(__FILE__), *%w[.. .. config])
 
-  class_option :demonstrate, :type => :boolean, :desc => "Don't actually run any commands on the node, just pretend."
+  class_option :demonstrate, :type => :boolean, :desc => "Don't actually run any commands on the group, just pretend."
   class_option :file,        :banner => 'ORCA_FILE', :desc => "path to the orca.rb file to load, defaults to ./orca/orca.rb"
   class_option :throw,       :type => :boolean, :desc => "Don't pretty print errors, raise with a stack trace."
 
-  desc "apply PACKAGE_NAME NODE_NAME", "apply the given package onto the given named node"
-  def apply(package, node)
-    run_command(package, node, :apply)
+  desc "apply PACKAGE_NAME GROUP_OR_NODE_NAME", "apply the given package onto the given named group"
+  def apply(package, group)
+    run_command(package, group, :apply)
   end
 
-  desc "remove PACKAGE_NAME NODE_NAME", "remove the given package onto the given named node"
-  def remove(package, node)
-    run_command(package, node, :remove)
+  desc "remove PACKAGE_NAME GROUP_OR_NODE_NAME", "remove the given package onto the given named group"
+  def remove(package, group)
+    run_command(package, group, :remove)
   end
 
-  desc "validate PACKAGE_NAME NODE_NAME", "run validation steps on the given named node"
-  def validate(package, node)
-    run_command(package, node, :validate)
+  desc "validate PACKAGE_NAME GROUP_OR_NODE_NAME", "run validation steps on the given named group"
+  def validate(package, group)
+    run_command(package, group, :validate)
   end
 
   desc "init", "initialize the current directory with a orca/orca.rb"
@@ -29,14 +29,14 @@ class Orca::Cli < Thor
 
   private
 
-  def run_command(package, node, cmd)
+  def run_command(package, group, cmd)
     begin
       suite = Orca::Suite.new
       suite.load_file(orca_file)
       if options[:demonstrate]
-        suite.demonstrate(node, package, cmd)
+        suite.demonstrate(group, package, cmd)
       else
-        suite.execute(node, package, cmd)
+        suite.execute(group, package, cmd)
       end
     rescue => e
       if options[:throw]
