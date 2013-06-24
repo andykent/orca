@@ -6,6 +6,7 @@ class Orca::Cli < Thor
   class_option :demonstrate, :type => :boolean, :desc => "Don't actually run any commands on the group, just pretend."
   class_option :file,        :banner => 'ORCA_FILE', :desc => "path to the orca.rb file to load, defaults to ./orca/orca.rb"
   class_option :throw,       :type => :boolean, :desc => "Don't pretty print errors, raise with a stack trace."
+  class_option :sequential,  :type => :boolean, :desc => "Don't run tasks in parrallel across nodes."
 
   desc "apply PACKAGE_NAME GROUP_OR_NODE_NAME", "apply the given package onto the given named group"
   def apply(package, group)
@@ -31,13 +32,9 @@ class Orca::Cli < Thor
 
   def run_command(package, group, cmd)
     begin
-      suite = Orca::Suite.new
+      suite = Orca::Suite.new(options)
       suite.load_file(orca_file)
-      if options[:demonstrate]
-        suite.demonstrate(group, package, cmd)
-      else
-        suite.execute(group, package, cmd)
-      end
+      suite.run(group, package, cmd)
     rescue => e
       if options[:throw]
         raise e
