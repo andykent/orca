@@ -35,6 +35,7 @@ end
 require_relative "./orca/package"
 require_relative "./orca/package_index"
 require_relative "./orca/node"
+require_relative "./orca/group"
 require_relative "./orca/runner"
 require_relative "./orca/resolver"
 require_relative "./orca/execution_context"

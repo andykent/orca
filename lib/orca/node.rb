@@ -11,6 +11,7 @@ class Orca::Node
 
   def self.register(node)
     @nodes ||= {}
+    Orca::Group.from_node(node)
     @nodes[node.name] = node
   end
 
