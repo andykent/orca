@@ -75,7 +75,18 @@ describe Orca::RemoteFile do
 
   describe 'delete!' do
     it "removes the file from the remote server" do
+      @context.expects(:run)
+              .with(%[if [ -f #{@remote_file_path} ]; then echo "true"; else echo "false"; fi])
+              .returns("true\n")
       @context.expects(:remove).with(@remote_file.path)
+      @remote_file.delete!
+    end
+
+    it "doesn't delete missing files" do
+      @context.expects(:run)
+              .with(%[if [ -f #{@remote_file_path} ]; then echo "true"; else echo "false"; fi])
+              .returns("false\n")
+      @context.expects(:remove).with(@remote_file.path).never
       @remote_file.delete!
     end
   end
