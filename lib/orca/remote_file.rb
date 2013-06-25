@@ -55,7 +55,7 @@ class Orca::RemoteFile
   end
 
   def delete!
-    @context.remove(path)
+    @context.remove(path) if exists?
     invalidate!
     self
   end
