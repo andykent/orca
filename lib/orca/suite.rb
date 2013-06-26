@@ -11,8 +11,14 @@ class Orca::Suite
 
   def run(group_name, pkg_name, command, sequential=false)
     group = Orca::Group.find(group_name)
-    pkg = Orca::PackageIndex.default.get(pkg_name)
-    runners = group.nodes.map { |node| Orca::Runner.new(node, pkg) }
+    runners = group.nodes.map do |node|
+      if command == :trigger
+        Orca::TriggerRunner.new(node, pkg_name)
+      else
+        pkg = Orca::PackageIndex.default.get(pkg_name)
+        Orca::Runner.new(node, pkg)
+      end
+    end
     if @sequential
       runners.each {|runner| exec(runner, command) }
     else

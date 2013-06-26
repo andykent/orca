@@ -28,6 +28,11 @@ class Orca::Cli < Thor
     directory('template', 'orca')
   end
 
+  desc "trigger ACTION_REF GROUP_OR_NODE_NAME", "trigger an action directly e.g. `orca trigger nginx:reload web-1`"
+  def trigger(action_ref, group)
+    run_command(action_ref, group, :trigger)
+  end
+
   private
 
   def run_command(package, group, cmd)

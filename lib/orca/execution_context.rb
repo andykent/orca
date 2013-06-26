@@ -47,12 +47,22 @@ class Orca::ExecutionContext
     pkg_name, action_name = *action_ref.split(':', 2)
     pkg = Orca::PackageIndex.default.get(pkg_name)
     action = pkg.actions[action_name]
-    raise "Action #{action_ref} could not be found." unless action
+    raise Orca::MissingActionError.new(action_ref) unless action
     instance_exec(*args, &action)
   end
 
   def binary_exists?(binary)
     run("which #{binary}") =~ /\/#{binary}/
+  end
+end
+
+class Orca::MissingActionError < StandardError
+  def initialize(action_ref)
+    @action_ref = action_ref
+  end
+
+  def message
+    "Action '#{@action_ref}' could not be found."
   end
 end
 
