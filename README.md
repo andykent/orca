@@ -77,6 +77,10 @@ So here are some examples (assuming you have a package called "app" and a node c
     orca apply app server
     orca remove app server
 
+You can also directly trigger actions from the CLI like so...
+
+    orca trigger nginx:reload web-1
+
 Options, all commands support the following optional parameters...
 
     --demonstrate | dont actually run the commands on the server just pretend like you are
