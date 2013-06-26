@@ -123,6 +123,7 @@ Orca packages are written in a Ruby based DSL. It's really simple to learn in le
       end
     end
 
+A more complete WIP example can be found in this gist... https://gist.github.com/andykent/5814997
 
 
 Extensions
