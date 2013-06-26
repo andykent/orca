@@ -1,4 +1,6 @@
 class Orca::ExecutionContext
+  attr_reader :node
+
   def initialize(node)
     @node = node
   end
@@ -9,6 +11,10 @@ class Orca::ExecutionContext
 
   def run(cmd)
     @node.execute(cmd)
+  end
+
+  def log(msg)
+    @node.log('log', msg)
   end
 
   def sudo(cmd)

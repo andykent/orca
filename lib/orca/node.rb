@@ -23,6 +23,14 @@ class Orca::Node
     Orca::Node.register(self)
   end
 
+  def get(option)
+    @options[option]
+  end
+
+  def method_missing(meth, *args)
+    get(meth)
+  end
+
   def upload(from, to)
     log('sftp', "UPLOAD: #{from} => #{to}")
     sftp.upload!(from, to)
@@ -71,14 +79,25 @@ class Orca::Node
 
   def log(context, msg)
     Thread.exclusive { puts "#{self.to_s} [#{context.to_s.bold}] #{msg}" }
+    msg
   end
 
   def connection
     return @connection if @connection
-    @connetion = Net::SSH.start(@host, (@options[:user] || 'root'), @options)
+    @connetion = Net::SSH.start(@host, (@options[:user] || 'root'), options_for_ssh)
   end
 
   def to_s
     "#{name}(#{host})"
+  end
+
+  private
+
+  def options_for_ssh
+    opts = [:auth_methods, :compression, :compression_level, :config, :encryption , :forward_agent , :global_known_hosts_file , :hmac , :host_key , :host_key_alias , :host_name, :kex , :keys , :key_data , :keys_only , :logger , :paranoid , :passphrase , :password , :port , :properties , :proxy , :rekey_blocks_limit , :rekey_limit , :rekey_packet_limit , :timeout , :user , :user_known_hosts_file , :verbose ]
+    @options.reduce({}) do |hsh, (k,v)|
+      hsh[k] = v if opts.include?(k)
+      hsh
+    end
   end
 end
