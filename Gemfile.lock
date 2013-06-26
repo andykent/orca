@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    orca (0.2.0)
+    orca (0.3.0)
       colored
       net-sftp
       net-ssh
@@ -12,6 +12,7 @@ GEM
   specs:
     colored (1.2)
     metaclass (0.0.1)
+    minitest (4.7.5)
     mocha (0.13.1)
       metaclass (~> 0.0.1)
     net-sftp (2.1.2)
@@ -24,6 +25,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  minitest
   mocha
   orca!
   rake
