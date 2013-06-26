@@ -83,10 +83,11 @@ You can also directly trigger actions from the CLI like so...
 
 Options, all commands support the following optional parameters...
 
-    --demonstrate | dont actually run the commands on the server just pretend like you are
-    --sequential  | dont attempt to run commands accross multiple nodes in parrallel
-    --throw       | throw a stack trace rather than pretty printing errors
-    --file        | path to the orca.rb file to load, defaults to ./orca/orca.rb
+    --demonstrate       | dont actually run the commands on the server just pretend like you are
+    --sequential        | dont attempt to run commands accross multiple nodes in parrallel
+    --throw             | throw a stack trace rather than pretty printing errors
+    --file              | path to the orca.rb file to load, defaults to ./orca/orca.rb
+    --skip-dependancies | Don't validate and run dependancies, only the pkg in question
 
 
 The Orca DSL

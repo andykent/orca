@@ -1,11 +1,13 @@
 class Orca::Runner
-  def initialize(node, package)
+  def initialize(node, package, skip_dependancies=false)
     @node = node
     @package = package
     @perform = true
+    @skip_dependancies = skip_dependancies
   end
 
   def packages
+    return [@package] if @skip_dependancies
     resolver = Orca::Resolver.new(@package)
     resolver.resolve
     resolver.packages

@@ -7,6 +7,7 @@ class Orca::Cli < Thor
   class_option :file,        :banner => 'ORCA_FILE', :desc => "path to the orca.rb file to load, defaults to ./orca/orca.rb"
   class_option :throw,       :type => :boolean, :desc => "Don't pretty print errors, raise with a stack trace."
   class_option :sequential,  :type => :boolean, :desc => "Don't run tasks in parrallel across nodes."
+  class_option :'skip-dependancies', :type => :boolean, :desc => "Don't validate and run dependancies."
 
   desc "apply PACKAGE_NAME GROUP_OR_NODE_NAME", "apply the given package onto the given named group"
   def apply(package, group)

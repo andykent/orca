@@ -3,6 +3,7 @@ class Orca::Suite
   def initialize(options={})
     @sequential = options[:sequential]
     @demonstrate = options[:demonstrate]
+    @skip_dependancies = options[:'skip-dependancies'] || false
   end
 
   def load_file(file)
@@ -16,7 +17,7 @@ class Orca::Suite
         Orca::TriggerRunner.new(node, pkg_name)
       else
         pkg = Orca::PackageIndex.default.get(pkg_name)
-        Orca::Runner.new(node, pkg)
+        Orca::Runner.new(node, pkg, @skip_dependancies)
       end
     end
     if @sequential
