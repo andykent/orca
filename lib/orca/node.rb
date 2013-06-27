@@ -43,7 +43,11 @@ class Orca::Node
 
   def remove(path)
     log('sftp', "REMOVE: #{path}")
-    sftp.remove!(path)
+    begin
+      sftp.remove!(path)
+    rescue Net::SFTP::StatusException
+      sudo("rm #{path}")
+    end
   end
 
   def stat(path)
