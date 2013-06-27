@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    orca (0.3.1)
+    orca (0.3.2)
       colored
       net-sftp
       net-ssh
