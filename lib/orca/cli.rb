@@ -10,18 +10,18 @@ class Orca::Cli < Thor
   class_option :verbose,     :type => :boolean, :desc => "print all SSH output, useful for debugging"
   class_option :'skip-dependancies', :type => :boolean, :desc => "Don't validate and run dependancies."
 
-  desc "apply PACKAGE_NAME GROUP_OR_NODE_NAME", "apply the given package onto the given named group"
-  def apply(package, group)
+  desc "apply PACKAGE_NAME [GROUP_OR_NODE_NAME]", "apply the given package onto the given named group"
+  def apply(package, group=package)
     run_command(package, group, :apply)
   end
 
-  desc "remove PACKAGE_NAME GROUP_OR_NODE_NAME", "remove the given package onto the given named group"
-  def remove(package, group)
+  desc "remove PACKAGE_NAME [GROUP_OR_NODE_NAME]", "remove the given package onto the given named group"
+  def remove(package, group=package)
     run_command(package, group, :remove)
   end
 
-  desc "validate PACKAGE_NAME GROUP_OR_NODE_NAME", "run validation steps on the given named group"
-  def validate(package, group)
+  desc "validate PACKAGE_NAME [GROUP_OR_NODE_NAME]", "run validation steps on the given named group"
+  def validate(package, group=package)
     run_command(package, group, :validate)
   end
 

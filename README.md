@@ -76,6 +76,13 @@ So here are some examples (assuming you have a package called "app" and a node c
 
     orca apply app server
     orca remove app server
+    orca validate app server
+
+If you have a package with the same name as a group or server you can abreviate this to...
+
+    orca apply server
+    orca remove server
+    orca validate server
 
 You can also directly trigger actions from the CLI like so...
 
