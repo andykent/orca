@@ -50,7 +50,7 @@ class Orca::FileSync
   end
 
   def run_after_apply(context)
-    context.instance_eval(&@after_apply)
+    context.instance_eval(&@after_apply) if @after_apply
   end
 
   def add_content_package
