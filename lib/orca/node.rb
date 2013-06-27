@@ -84,7 +84,7 @@ class Orca::Node
 
   def connection
     return @connection if @connection
-    @connetion = Net::SSH.start(@host, (@options[:user] || 'root'), options_for_ssh)
+    @connection = Net::SSH.start(@host, (@options[:user] || 'root'), options_for_ssh)
   end
 
   def to_s
