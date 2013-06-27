@@ -9,16 +9,16 @@ class Orca::ExecutionContext
     instance_eval(&blk)
   end
 
-  def run(cmd)
-    @node.execute(cmd)
+  def run(cmd, opts={})
+    @node.execute(cmd, opts)
   end
 
   def log(msg)
     @node.log('log', msg)
   end
 
-  def sudo(cmd)
-    @node.sudo(cmd)
+  def sudo(cmd, opts={})
+    @node.sudo(cmd, opts)
   end
 
   def upload(from, to)

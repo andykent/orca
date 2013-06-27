@@ -60,21 +60,21 @@ class Orca::Node
     @sftp ||= connection.sftp.connect
   end
 
-  def execute(cmd)
+  def execute(cmd, opts={})
     log('execute', cmd.cyan)
     output = ""
     connection.exec! cmd do |channel, stream, data|
       output += data if stream == :stdout
       data.split("\n").each do |line|
         msg = stream == :stdout ? line.green : line.red
-        log(stream, msg)
+        log(stream, msg) if opts[:log] || Orca.verbose
       end
     end
     output
   end
 
-  def sudo(cmd)
-    execute("sudo #{cmd}")
+  def sudo(cmd, opts={})
+    execute("sudo #{cmd}", opts)
   end
 
   def log(context, msg)

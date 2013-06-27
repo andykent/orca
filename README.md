@@ -87,6 +87,7 @@ Options, all commands support the following optional parameters...
     --sequential        | dont attempt to run commands accross multiple nodes in parrallel
     --throw             | throw a stack trace rather than pretty printing errors
     --file              | path to the orca.rb file to load, defaults to ./orca/orca.rb
+    --verbose           | print all SSH output, useful for debugging but can be rather long
     --skip-dependancies | Don't validate and run dependancies, only the pkg in question
 
 

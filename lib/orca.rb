@@ -3,6 +3,12 @@ require 'colored'
 require 'thor'
 
 module Orca
+  def verbose(val=nil)
+    @verbose = val unless val.nil?
+    @verbose || false
+  end
+  module_function :verbose
+
   def root
     File.dirname(ENV['ORCA_FILE'])
   end
