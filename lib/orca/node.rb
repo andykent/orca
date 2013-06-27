@@ -87,6 +87,10 @@ class Orca::Node
     @connection = Net::SSH.start(@host, (@options[:user] || 'root'), options_for_ssh)
   end
 
+  def disconnect
+    @connection.close if @connection && !@connection.closed?
+  end
+
   def to_s
     "#{name}(#{host})"
   end

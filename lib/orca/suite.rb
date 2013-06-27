@@ -4,6 +4,7 @@ class Orca::Suite
     @sequential = options[:sequential]
     @demonstrate = options[:demonstrate]
     @skip_dependancies = options[:'skip-dependancies'] || false
+    @nodes = []
   end
 
   def load_file(file)
@@ -13,6 +14,7 @@ class Orca::Suite
   def run(group_name, pkg_name, command, sequential=false)
     group = Orca::Group.find(group_name)
     runners = group.nodes.map do |node|
+      @nodes << node
       if command == :trigger
         Orca::TriggerRunner.new(node, pkg_name)
       else
@@ -27,6 +29,12 @@ class Orca::Suite
       threads.each {|t| t.join }
     end
   end
+
+  def cleanup
+    @nodes.each(&:disconnect)
+  end
+
+  private
 
   def exec(runner, command)
     if @demonstrate

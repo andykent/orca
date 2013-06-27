@@ -49,6 +49,8 @@ class Orca::Cli < Thor
       else
         puts "!!! ERROR !!! [#{e.class.name}] #{e.message}".red.bold
       end
+    ensure
+      suite.cleanup
     end
   end
 
