@@ -70,7 +70,7 @@ This will create a config/orca.rb file for you to get started with.
 
 To ship run a command the syntax is as follows...
 
-    orca [command] [package] [node]
+    orca [command] [package] [group_or_node]
 
 So here are some examples (assuming you have a package called "app" and a node called "server" defined in your orca.rb)...
 
@@ -78,7 +78,7 @@ So here are some examples (assuming you have a package called "app" and a node c
     orca remove app server
     orca validate app server
 
-If you have a package with the same name as a group or server you can abreviate this to...
+If you have a package with the same name as a group or node you can abreviate this to...
 
     orca apply server
     orca remove server
@@ -101,13 +101,18 @@ Options, all commands support the following optional parameters...
 The Orca DSL
 ------------
 
-Orca packages are written in a Ruby based DSL. It's really simple to learn in less than 5 mins. Here's an example orca.rb file with all you'll need to know to get started...
+Orca packages are written in a Ruby based DSL. It's really simple to learn in less than 5 mins. Below is an example orca.rb file with some hints to help you get started. A more complete WIP example can be found in this gist... https://gist.github.com/andykent/5814997
+
+    group 'web' do              # groups are collections of nodes that can be referenced by name
+      node 'web-1.mysite.com'   # nodes are usually machines or VMs that you intend to configure
+      includes 'uploaders'      # groups are composable so a group can contain nodes from another group
+    end                         # orca will execute tasks concurrently across all nodes in a group
 
     # define a new pacage called 'gem' that provides some actions for managing rubygems
     package 'gem' do
-      depends_on 'ruby-1.9.3'                           # this package depends on another package called ruby-1.9.3
-      action 'exists' do |gem_name|                     # define an action that other packages can trigger called 'exists'
-        run("gem list -i #{gem_name}") =~ /true/        # execute the command, get the output and check it contains 'true'
+      depends_on 'ruby-1.9.3'                     # this package depends on another package called ruby-1.9.3
+      action 'exists' do |gem_name|               # define an action that other packages can trigger called 'exists'
+        run("gem list -i #{gem_name}") =~ /true/  # execute the command, get the output and check it contains 'true'
       end
       action 'install' do |gem_name|
         run "gem install #{gem_name} --no-ri --no-rdoc"
@@ -121,17 +126,16 @@ Orca packages are written in a Ruby based DSL. It's really simple to learn in le
     package 'bundler' do
       depends_on 'gem'
       apply do                                # apply gets called whenever this package or a package that depends on it is applied
-        trigger('gem:install', 'bundler')     # trigger triggers defined actions, in this case the action 'instal' on 'gem'
+        trigger('gem:install', 'bundler')     # trigger triggers defined actions, in this case the action 'install' on 'gem'
       end
       remove do                               # remove gets called whenever this package or a package that depends on it is removed
-        trigger('gem:remove', 'bundler')
+        trigger('gem:uninstall', 'bundler')
       end
       validate do                             # validate is used internally to check if the package is applied correctly or not
-        trigger('gem:exists', 'bundler')
+        trigger('gem:exists', 'bundler')      # validate should return true if the package is applied correctly
       end
     end
 
-A more complete WIP example can be found in this gist... https://gist.github.com/andykent/5814997
 
 
 Extensions
@@ -145,6 +149,7 @@ Some example extensions are included in this repo and can be required into your 
 
 `relative "orca/extensions/file_sync"` - Adds support for syncing and converging local/remove files with the `file` action.
 
+*Note: these extensions are likely to be removed to their own 'contrib' project at some point in the future*
 
 Extras
 ------
