@@ -47,10 +47,14 @@ class Orca::Cli < Thor
       if options[:throw]
         raise e
       else
-        puts "!!! ERROR !!! [#{e.class.name}] #{e.message}".red.bold
+        $stderr.puts "!!! ERROR !!! [#{e.class.name}] #{e.message}".red.bold
+        exit(1)
       end
     ensure
+      $stdout.print "Disconnecting...".green
       suite.cleanup
+      $stdout.puts "Done!".green
+      exit(0)
     end
   end
 
