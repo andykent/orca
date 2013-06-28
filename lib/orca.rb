@@ -38,6 +38,7 @@ module Orca
   end
 end
 
+require_relative "./orca/logger"
 require_relative "./orca/package"
 require_relative "./orca/package_index"
 require_relative "./orca/node"

@@ -1,20 +1,32 @@
+require "open3"
+
 class Orca::ExecutionContext
   attr_reader :node
 
-  def initialize(node)
+  def initialize(node, log)
     @node = node
+    @log = log
+    @node.log_to(@log)
   end
 
   def apply(blk)
     instance_eval(&blk)
   end
 
+  def run_local(cmd)
+    @log.local(cmd)
+    stdout, stderr, status = Open3.capture3(cmd)
+    @log.stdout(stdout)
+    @log.stderr(stderr)
+  end
+
   def run(cmd, opts={})
     @node.execute(cmd, opts)
   end
 
-  def log(msg)
-    @node.log('log', msg)
+  def log(msg=nil)
+    @log.log(msg) if msg
+    @log
   end
 
   def sudo(cmd, opts={})
@@ -74,32 +86,32 @@ end
 
 class Orca::MockExecutionContext < Orca::ExecutionContext
   def run(cmd)
-    @node.log 'mock-execute', cmd
+    @log.mock_execute(cmd)
     ''
   end
 
   def sudo(cmd)
-    @node.log 'mock-execute', "sudo #{cmd}"
+    @log.mock_execute "sudo #{cmd}"
     ''
   end
 
   def upload(from, to)
-    @node.log('mock-sftp', "UPLOAD: #{from} => #{to}")
+    @log.mock_execute("UPLOAD: #{from} => #{to}")
   end
 
   def download(from, to)
-    @node.log('mock-sftp', "DOWLOAD: #{from} => #{to}")
+    @log.mock_execute("DOWLOAD: #{from} => #{to}")
   end
 
   def remove(path)
-    @node.log('mock-sftp', "REMOVE: #{path}")
+    @log.mock_execute("REMOVE: #{path}")
   end
 
   def stat(path)
-    @node.log('mock-sftp', "STAT: #{path}")
+    @log.mock_execute("STAT: #{path}")
   end
 
   def setstat(path, opts)
-    @node.log('mock-sftp', "SET: #{path} - #{opts.inspect}")
+    @log.mock_execute("SET: #{path} - #{opts.inspect}")
   end
 end

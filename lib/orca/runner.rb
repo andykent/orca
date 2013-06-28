@@ -4,6 +4,7 @@ class Orca::Runner
     @package = package
     @perform = true
     @skip_dependancies = skip_dependancies
+    @log = Orca::Logger.new(@node, package)
   end
 
   def packages
@@ -14,7 +15,7 @@ class Orca::Runner
   end
 
   def execute(command_name)
-    @node.log command_name, packages.map(&:name).join(', ').yellow
+    @log.say packages.map(&:name).join(', ').yellow
     packages.each do |pkg|
       send(:"execute_#{command_name}", pkg)
     end
@@ -64,8 +65,9 @@ class Orca::Runner
   end
 
   def exec(pkg, command_name)
-    @node.log pkg.name, command_name.to_s.yellow
-    context = @perform ? Orca::ExecutionContext.new(@node) : Orca::MockExecutionContext.new(@node)
+    @log.set_package(pkg)
+    @log.command(command_name)
+    context = @perform ? Orca::ExecutionContext.new(@node, @log) : Orca::MockExecutionContext.new(@node, @log)
     cmds = pkg.command(command_name)
     cmds.map {|cmd| context.apply(cmd) }
   end

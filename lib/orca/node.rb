@@ -20,6 +20,7 @@ class Orca::Node
     @host = host
     @options = options
     @connection = nil
+    @history = []
     Orca::Node.register(self)
   end
 
@@ -32,17 +33,17 @@ class Orca::Node
   end
 
   def upload(from, to)
-    log('sftp', "UPLOAD: #{from} => #{to}")
+    log.sftp("UPLOAD: #{from} => #{to}")
     sftp.upload!(from, to)
   end
 
   def download(from, to)
-    log('sftp', "DOWLOAD: #{from} => #{to}")
+    log.sftp("DOWLOAD: #{from} => #{to}")
     sftp.download!(from, to)
   end
 
   def remove(path)
-    log('sftp', "REMOVE: #{path}")
+    log.sftp("REMOVE: #{path}")
     begin
       sftp.remove!(path)
     rescue Net::SFTP::StatusException
@@ -51,12 +52,12 @@ class Orca::Node
   end
 
   def stat(path)
-    log('sftp', "STAT: #{path}")
+    log.sftp("STAT: #{path}")
     sftp.stat!(path)
   end
 
   def setstat(path, opts)
-    log('sftp', "SET: #{path} - #{opts.inspect}")
+    log.sftp("SET: #{path} - #{opts.inspect}")
     sftp.setstat!(path, opts)
   end
 
@@ -65,25 +66,23 @@ class Orca::Node
   end
 
   def execute(cmd, opts={})
-    log('execute', cmd.cyan)
-    output = ""
-    connection.exec! cmd do |channel, stream, data|
-      output += data if stream == :stdout
-      data.split("\n").each do |line|
-        msg = stream == :stdout ? line.green : line.red
-        log(stream, msg) if opts[:log] || Orca.verbose
-      end
+    if should_execute?(cmd, opts)
+      really_execute(cmd, opts)
+    else
+      cached_execute(cmd, opts)
     end
-    output
   end
 
   def sudo(cmd, opts={})
     execute("sudo #{cmd}", opts)
   end
 
-  def log(context, msg)
-    Thread.exclusive { puts "#{self.to_s} [#{context.to_s.bold}] #{msg}" }
-    msg
+  def log
+    @log
+  end
+
+  def log_to(log)
+    @log = log
   end
 
   def connection
@@ -107,5 +106,34 @@ class Orca::Node
       hsh[k] = v if opts.include?(k)
       hsh
     end
+  end
+
+  def cached_execute(cmd, opts={})
+    log.cached(cmd)
+    last_output(cmd)
+  end
+
+  def really_execute(cmd, opts={})
+    log.execute(cmd.cyan)
+    output = ""
+    connection.exec! cmd do |channel, stream, data|
+      output += data if stream == :stdout
+      data.split("\n").each do |line|
+        log.send(stream, line, opts[:log])
+      end
+    end
+    @history << {cmd:cmd, output:output}
+    output
+  end
+
+  def should_execute?(cmd, opts)
+    return true unless opts[:once]
+    last_output(cmd).nil?
+  end
+
+  def last_output(cmd)
+    results = @history.select {|h| h[:cmd] == cmd }
+    return nil unless results && results.size > 0
+    results.last[:output]
   end
 end
