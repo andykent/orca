@@ -37,10 +37,11 @@ Orca.extension :apt do
 
     action 'ppa' do |repo|
       sudo "DEBIAN_FRONTEND=noninteractive add-apt-repository #{repo} -y"
+      trigger 'apt:update', true
     end
 
-    action 'update' do
-      sudo "DEBIAN_FRONTEND=noninteractive apt-get update -y -qq"
+    action 'update' do |force=false|
+      sudo "DEBIAN_FRONTEND=noninteractive apt-get update -y -qq", {:once => !force}
     end
 
     action 'exists' do |package_name, required_version=nil|
