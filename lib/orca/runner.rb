@@ -15,8 +15,10 @@ class Orca::Runner
   end
 
   def execute(command_name)
-    @log.say packages.map(&:name).join(', ').yellow
-    packages.each do |pkg|
+    pkgs = packages
+    pkgs.reverse! if command_name.to_sym == :remove
+    @log.say pkgs.map(&:name).join(', ').yellow
+    pkgs.each do |pkg|
       send(:"execute_#{command_name}", pkg)
     end
   end
