@@ -37,7 +37,7 @@ Orca fixes these problems by...
 What problems is Orca avoiding?
 -------------------------------
 
-Orca intentionally skirts around some important thengs that may or may not matter to you. If they do then you are probably better using more robust tools such as Puppet or Chef.
+Orca intentionally skirts around some important things that may or may not matter to you. If they do then you are probably better using more robust tools such as Puppet or Chef.
 
 Orca doesn't...
 
