@@ -27,10 +27,10 @@ Orca fills the rather large gap between (2) and (3). It's a bigger gap then you 
 
 Orca fixes these problems by...
 
-- working directly over SSH, all you need is a box tht you can connect to
+- working directly over SSH, all you need is a box that you can connect to
 - package definitions can all go in a single file and most servers can be configured in ~50 lines
 - packages are defined in a ruby based DSL that consists of only 5 very basic commands to learn
-- Orca makes no assumptions about the underlying OS accept to assume it supports SSH
+- Orca makes no assumptions about the underlying OS except to assume it supports SSH
 - Orca is extensible and adding platform specific features like package manger support can be achieved in a dozen or so lines.
 
 
