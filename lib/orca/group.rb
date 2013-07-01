@@ -16,7 +16,7 @@ class Orca::Group
     end
   end
 
-  attr_reader :name, :nodes
+  attr_reader :name, :nodes, :config
 
   def initialize(name, config={}, nodes=[])
     @name = name
@@ -35,5 +35,9 @@ class Orca::Group
 
   def includes(group)
     Orca::Group.find(group).nodes.each {|n| add_node(n) }
+  end
+
+  def set(property, value)
+    @config[property.to_sym] = value
   end
 end

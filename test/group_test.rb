@@ -59,4 +59,12 @@ describe Orca::Group do
       group2.nodes.must_equal [node]
     end
   end
+
+  describe ".set(property, value)" do
+    it "sets a config option for the group" do
+      group = Orca::Group.new('test')
+      group.set :user, 'testuser'
+      group.config[:user].must_equal 'testuser'
+    end
+  end
 end
