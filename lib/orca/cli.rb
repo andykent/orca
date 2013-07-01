@@ -39,22 +39,24 @@ class Orca::Cli < Thor
 
   def run_command(package, group, cmd)
     Orca.verbose(options[:verbose] || false)
+    err = nil
     begin
       suite = Orca::Suite.new(options)
       suite.load_file(orca_file)
       suite.run(group, package, cmd)
     rescue => e
-      if options[:throw]
-        raise e
-      else
-        $stderr.puts "!!! ERROR !!! [#{e.class.name}] #{e.message}".red.bold
-        exit(1)
-      end
+      err = e
     ensure
       $stdout.print "Disconnecting...".green
       suite.cleanup
       $stdout.puts "Done!".green
-      exit(0)
+      exit(0) if err.nil?
+      if options[:throw]
+        raise err
+      else
+        $stderr.puts "!!! ERROR !!! [#{e.class.name}] #{e.message}".red.bold
+        exit(1)
+      end
     end
   end
 
