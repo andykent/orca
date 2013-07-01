@@ -6,7 +6,7 @@ class Orca::Group
     end
 
     def from_node(node)
-      new(node.name, [node])
+      new(node.name, {}, [node])
     end
 
     def find(name)
@@ -18,14 +18,15 @@ class Orca::Group
 
   attr_reader :name, :nodes
 
-  def initialize(name, nodes=[])
+  def initialize(name, config={}, nodes=[])
     @name = name
+    @config = config
     @nodes = nodes
     Orca::Group.register(self)
   end
 
   def node(name, host, options={})
-    add_node( Orca::Node.new(name, host, options) )
+    add_node( Orca::Node.new(name, host, @config.merge(options)) )
   end
 
   def add_node(node)

@@ -20,6 +20,15 @@ describe Orca::Group do
       group.nodes.first.name.must_equal 'mynode'
       group.nodes.first.host.must_equal 'myhost'
     end
+
+    it "inherits config from the group" do
+      group = Orca::Group.new('test', :user => 'testuser')
+      group.node('mynode', 'myhost')
+      group.nodes.size.must_equal 1
+      group.nodes.first.name.must_equal 'mynode'
+      group.nodes.first.host.must_equal 'myhost'
+      group.nodes.first.user.must_equal 'testuser'
+    end
   end
 
   describe ".add_node(node)" do
@@ -34,7 +43,7 @@ describe Orca::Group do
   describe ".includes(other_group)" do
     it "copied the nodes from another group" do
       node = mock
-      group = Orca::Group.new('test-a', [node])
+      group = Orca::Group.new('test-a', {}, [node])
       group2 = Orca::Group.new('test-b')
       group2.nodes.must_equal []
       group2.includes(group)
@@ -43,7 +52,7 @@ describe Orca::Group do
 
     it "copied the nodes from another group by name" do
       node = mock
-      group = Orca::Group.new('test-a', [node])
+      group = Orca::Group.new('test-a', {}, [node])
       group2 = Orca::Group.new('test-b')
       group2.nodes.must_equal []
       group2.includes('test-a')
