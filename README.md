@@ -87,6 +87,7 @@ If you have a package with the same name as a group or node you can abreviate th
 You can also directly trigger actions from the CLI like so...
 
     orca trigger nginx:reload web-1
+    orca trigger firewall:add[allow,80] web-1
 
 Options, all commands support the following optional parameters...
 
