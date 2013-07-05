@@ -1,4 +1,4 @@
-Orca.extension :file_sync do
+Orca.extension do
   class Orca::Package
     def file(config, &blk)
       Orca::FileSync.new(self, config, &blk).configure

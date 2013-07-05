@@ -22,7 +22,7 @@ module Orca
   end
   module_function :add_package
 
-  def extension(name, &blk)
+  def extension(&blk)
     Orca::DSL.class_eval(&blk)
   end
   module_function :extension

@@ -1,4 +1,4 @@
-Orca.extension :apt do
+Orca.extension do
 
   # supports three formats
   # apt_package 'git-core' - create a package 'git-core' that installs 'git-core'
