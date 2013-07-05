@@ -49,4 +49,8 @@ class Orca::Package
   def provides_command?(name)
     @commands.has_key?(name.to_sym)
   end
+
+  def to_s
+    self.name
+  end
 end

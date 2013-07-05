@@ -1,11 +1,11 @@
 class Orca::Logger
   def initialize(node, package)
     @node = node
-    @package = package
+    set_package(package)
   end
 
   def set_package(package)
-    @package = package
+    @package = package.to_s
   end
 
   def command(msg)
@@ -47,7 +47,7 @@ class Orca::Logger
   def say(msg, color=nil)
     msg.to_s.split("\n").each do |line|
       out = color ? line.send(color) : line
-      Thread.exclusive { puts "#{@node.to_s} [#{@package.name.bold}] #{out}" }
+      Thread.exclusive { puts "#{@node.to_s} [#{@package.bold}] #{out}" }
     end
   end
 end
