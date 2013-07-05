@@ -14,6 +14,10 @@ class Orca::Group
       return nil unless @groups
       @groups[name]
     end
+
+    def names
+      @groups.keys.sort
+    end
   end
 
   attr_reader :name, :nodes, :config
