@@ -61,6 +61,10 @@ class Orca::ExecutionContext
     Orca::RemoteFile.new(self, path)
   end
 
+  def template(path)
+    Orca::Template.new(@node, path)
+  end
+
   def trigger(action_ref, *args)
     pkg_name, action_name = *action_ref.split(':', 2)
     pkg = Orca::PackageIndex.default.get(pkg_name)

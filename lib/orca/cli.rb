@@ -1,3 +1,5 @@
+require 'thor'
+
 class Orca::Cli < Thor
   include Thor::Actions
 
@@ -44,7 +46,7 @@ class Orca::Cli < Thor
       suite = Orca::Suite.new(options)
       suite.load_file(orca_file)
       suite.run(group, package, cmd)
-    rescue => e
+    rescue Exception => e
       err = e
     ensure
       $stdout.print "Disconnecting...".green

@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'colored'
-require 'thor'
 
 module Orca
   def verbose(val=nil)
@@ -46,6 +45,7 @@ require_relative "./orca/group"
 require_relative "./orca/runner"
 require_relative "./orca/trigger_runner"
 require_relative "./orca/resolver"
+require_relative "./orca/template"
 require_relative "./orca/execution_context"
 require_relative "./orca/local_file"
 require_relative "./orca/remote_file"

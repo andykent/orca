@@ -11,12 +11,21 @@ class Orca::FileSync
     @parent = parent
     @config = config
     @after_apply = blk
-    raise ArgumentError.new('A file :source must be provided') unless local_path
+    raise ArgumentError.new('A file :source  or template must be provided') unless local_path or template_path
     raise ArgumentError.new('A file :destination must be provided') unless remote_path
   end
 
   def local_path
     @config[:source]
+  end
+
+  def template_path
+    @config[:template]
+  end
+
+  def local_path_for_node(node)
+    return local_path if local_path
+    Orca::Template.new(node, template_path).render_to_tempfile
   end
 
   def remote_path
@@ -62,7 +71,7 @@ class Orca::FileSync
           sudo("mkdir -p #{mk_dir}")
           sudo("chown #{fs.user}:#{fs.group || fs.user} #{mk_dir}") if fs.user
         end
-        local_file = local(fs.local_path)
+        local_file = local(fs.local_path_for_node(node))
         tmp_path = "orca-upload-#{local_file.hash}"
         local_file.copy_to(remote(tmp_path))
         sudo("mv #{tmp_path} #{fs.remote_path}")
@@ -74,7 +83,7 @@ class Orca::FileSync
       end
 
       package.command :validate do
-        local(fs.local_path).matches?(remote(fs.remote_path))
+        local(fs.local_path_for_node(node)).matches?(remote(fs.remote_path))
       end
     end
   end

@@ -10,9 +10,10 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "orca"
   gem.require_paths = ["lib"]
-  gem.version       = '0.3.6'
+  gem.version       = '0.4.0'
   gem.add_dependency('colored')
   gem.add_dependency('net-ssh')
   gem.add_dependency('net-sftp')
   gem.add_dependency('thor')
+  gem.add_dependency('tilt')
 end
