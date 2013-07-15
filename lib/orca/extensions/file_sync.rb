@@ -11,51 +11,56 @@ class Orca::FileSync
     @parent = parent
     @config = config
     @after_apply = blk
-    raise ArgumentError.new('A file :source  or template must be provided') unless local_path or template_path
-    raise ArgumentError.new('A file :destination must be provided') unless remote_path
+    raise ArgumentError.new('A file :source  or template must be provided') unless @config[:source] or @config[:template]
+    raise ArgumentError.new('A file :destination must be provided') unless @config[:destination]
   end
 
-  def local_path
-    @config[:source]
+  def local_path(context)
+    value_for context, @config[:source]
   end
 
-  def template_path
-    @config[:template]
+  def template_path(context)
+    value_for context, @config[:template]
   end
 
-  def local_path_for_node(node)
-    return local_path if local_path
-    Orca::Template.new(node, template_path).render_to_tempfile
+  def local_path_for_node(context)
+    return local_path(context) if @config[:source]
+    Orca::Template.new(context.node, template_path(context)).render_to_tempfile
   end
 
-  def remote_path
-    @config[:destination]
+  def remote_path(context)
+    value_for context, @config[:destination]
   end
 
-  def permissions
-    @config[:permissions]
+  def permissions(context)
+    value_for context, @config[:permissions]
   end
 
-  def user
-    @config[:user]
+  def user(context)
+    value_for context, @config[:user]
   end
 
-  def group
-    @config[:group]
+  def group(context)
+    value_for context, @config[:group]
   end
 
-  def create_dir
-    @config[:create_dir] || @config[:create_dirs]
+  def create_dir(context)
+    value_for context, (@config[:create_dir] || @config[:create_dirs])
   end
 
   def package_name(suffix)
-    "file-#{suffix}[#{remote_path}]"
+    name = @config[:name]
+    if name.nil? && !@config[:destination].is_a?(String)
+      raise ArgumentError.new("You must provide a :name option unless :destination is a String")
+    end
+    name ||= @config[:destination]
+    "file-#{suffix}[#{name}]"
   end
 
   def configure
     fs = self
     add_content_package
-    add_permissions_package unless permissions.nil? and user.nil? and group.nil?
+    add_permissions_package unless @config[:permissions].nil? and @config[:user].nil? and @config[:group].nil?
   end
 
   def run_after_apply(context)
@@ -66,24 +71,24 @@ class Orca::FileSync
     fs = self
     add_package('content') do |package|
       package.command :apply do
-        if fs.create_dir
-          mk_dir = fs.create_dir == true ? File.dirname(fs.remote_path) : fs.create_dir
+        if fs.create_dir(self)
+          mk_dir = fs.create_dir(self) == true ? File.dirname(fs.remote_path(self)) : fs.create_dir(self)
           sudo("mkdir -p #{mk_dir}")
-          sudo("chown #{fs.user}:#{fs.group || fs.user} #{mk_dir}") if fs.user
+          sudo("chown #{fs.user}:#{fs.group(self) || fs.user(self)} #{mk_dir}") if fs.user(self)
         end
-        local_file = local(fs.local_path_for_node(node))
+        local_file = local(fs.local_path_for_node(self))
         tmp_path = "orca-upload-#{local_file.hash}"
         local_file.copy_to(remote(tmp_path))
-        sudo("mv #{tmp_path} #{fs.remote_path}")
+        sudo("mv #{tmp_path} #{fs.remote_path(self)}")
         fs.run_after_apply(self)
       end
 
       package.command :remove do
-        remote(fs.remote_path).delete!
+        remote(fs.remote_path(self)).delete!
       end
 
       package.command :validate do
-        local(fs.local_path_for_node(node)).matches?(remote(fs.remote_path))
+        local(fs.local_path_for_node(self)).matches?(remote(fs.remote_path(self)))
       end
     end
   end
@@ -92,16 +97,16 @@ class Orca::FileSync
     fs = self
     add_package('permissions') do |package|
       package.command :apply do
-        remote(fs.remote_path).set_owner(fs.user, fs.group) unless fs.user.nil? and fs.group.nil?
-        remote(fs.remote_path).set_permissions(fs.permissions) unless fs.permissions.nil?
+        remote(fs.remote_path).set_owner(fs.user(self), fs.group(self)) unless fs.user(self).nil? and fs.group(self).nil?
+        remote(fs.remote_path(self)).set_permissions(fs.permissions(self)) unless fs.permissions(self).nil?
         fs.run_after_apply(self)
       end
 
       package.command :validate do
-        r_file = remote(fs.remote_path)
-        valid = r_file.permissions == fs.permissions
-        valid = valid && r_file.user == fs.user if fs.user
-        valid = valid && r_file.group == fs.group if fs.group
+        r_file = remote(fs.remote_path(self))
+        valid = r_file.permissions == fs.permissions(self)
+        valid = valid && r_file.user == fs.user(self) if fs.user(self)
+        valid = valid && r_file.group == fs.group(self) if fs.group(self)
         valid
       end
     end
@@ -112,5 +117,11 @@ class Orca::FileSync
     yield(package)
     @parent.triggers(package.name)
     package
+  end
+
+  def value_for(context, option)
+    return nil if option.nil?
+    return context.instance_exec(&option) if option.respond_to?(:call)
+    option
   end
 end
