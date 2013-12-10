@@ -64,7 +64,7 @@ Command Line Usage
 
 To get started from within your projct you can run...
 
-    orca init .
+    orca init
 
 This will create a config/orca.rb file for you to get started with.
 
