@@ -1,8 +1,9 @@
 class Orca::Package
-  attr_reader :name, :dependancies, :actions, :children
+  attr_reader :name, :dependancies, :actions, :children, :user
 
   def initialize(name)
     @name = name
+    @user = nil
     @dependancies = []
     @children = []
     @actions = {}
@@ -32,6 +33,10 @@ class Orca::Package
 
   def remove(&definition)
     command(:remove, &definition)
+  end
+
+  def as(user)
+    @user = user
   end
 
   def action(name, &definition)

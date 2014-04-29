@@ -1,7 +1,7 @@
 require "open3"
 
 class Orca::ExecutionContext
-  attr_reader :node
+  attr_reader :node, :log
 
   def initialize(node, log)
     @node = node
@@ -11,6 +11,17 @@ class Orca::ExecutionContext
 
   def apply(blk)
     instance_eval(&blk)
+  end
+
+  def as(user, &blk)
+    for_user(user).apply(blk)
+  end
+
+  def for_user(user)
+    return self if user.nil? || user == node.user
+    new_node = @node.for_user(user)
+    new_log = @log.clone_for_node(new_node)
+    self.class.new(new_node, new_log)
   end
 
   def run_local(cmd)

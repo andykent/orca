@@ -1,7 +1,15 @@
 class Orca::Logger
+  attr_accessor :node
+
   def initialize(node, package)
     @node = node
     set_package(package)
+  end
+
+  def clone_for_node(node)
+    copy = self.dup
+    copy.node = node
+    copy
   end
 
   def set_package(package)

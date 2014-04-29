@@ -67,10 +67,11 @@ class Orca::Runner
   end
 
   def exec(pkg, command_name)
-    @log.set_package(pkg)
-    @log.command(command_name)
     context = @perform ? Orca::ExecutionContext.new(@node, @log) : Orca::MockExecutionContext.new(@node, @log)
     cmds = pkg.command(command_name)
+    context = context.for_user(pkg.user) if pkg.user
+    context.log.set_package(pkg)
+    context.log.command(command_name)
     cmds.map {|cmd| context.apply(cmd) }
   end
 

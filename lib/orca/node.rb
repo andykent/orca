@@ -2,7 +2,7 @@ require 'net/ssh'
 require 'net/sftp'
 
 class Orca::Node
-  attr_reader :name, :host
+  attr_reader :name, :host, :user
 
   def self.find(name)
     return name if name.is_a?(Orca::Node)
@@ -19,8 +19,10 @@ class Orca::Node
     @name = name
     @host = host
     @options = options
+    @user = @options[:user] || 'root'
     @connection = nil
     @history = []
+    @user_nodes = {}
     Orca::Node.register(self)
   end
 
@@ -85,17 +87,35 @@ class Orca::Node
     @log = log
   end
 
+  def for_user(new_user)
+    new_user = new_user.to_s
+    return self if self.user == new_user
+    return @user_nodes[new_user] if @user_nodes[new_user]
+    new_node = self.dup
+    new_node.prepare_connection_for_user!(new_user)
+    @user_nodes[new_user] = new_node
+    new_node
+  end
+
+  def prepare_connection_for_user!(new_user)
+    @user = new_user
+    @connection = nil
+    @user_nodes = {}
+    @history = []
+  end
+
   def connection
-    return @connection if @connection
-    @connection = Net::SSH.start(@host, (@options[:user] || 'root'), options_for_ssh)
+    return @connection if @connection && !@connection.closed?
+    @connection = Net::SSH.start(@host, (@user), options_for_ssh)
   end
 
   def disconnect
     @connection.close if @connection && !@connection.closed?
+    @user_nodes.values.each {|n| n.disconnect }
   end
 
   def to_s
-    "#{name}(#{host})"
+    "#{name}(#{user}@#{host})"
   end
 
   private
