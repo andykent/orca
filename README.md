@@ -11,7 +11,7 @@ If you've found yourself stuck in the gap between deployment tools like Capistra
 What problem does Orca try to solve?
 ------------------------------------
 
-All too often you need to get a new server up and running to a known state so that you can get an app deployed. Before Orca there were boardly 4 options...
+All too often you need to get a new server up and running to a known state so that you can get an app deployed. Before Orca there were broadly 4 options...
 
 1. Start from scratch and hand install all the packages, files, permissions, etc. Yourself via trial and error over SSH.
 2. Use a deployment tool like Capistrano to codeify your shell scripts into semi-reusable steps.
