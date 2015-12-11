@@ -134,6 +134,7 @@ class Orca::Node
   end
 
   def really_execute(cmd, opts={})
+    cmd = prefixed_command(cmd)
     log.execute(cmd.cyan)
     output = ""
     connection.exec! cmd do |channel, stream, data|
@@ -155,5 +156,10 @@ class Orca::Node
     results = @history.select {|h| h[:cmd] == cmd }
     return nil unless results && results.size > 0
     results.last[:output]
+  end
+
+  def prefixed_command(cmd)
+    return cmd unless @options[:prefix]
+    @options[:prefix] + cmd
   end
 end

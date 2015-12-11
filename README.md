@@ -1,3 +1,7 @@
+>### Deprecation Notice
+>This project was an old experiment into alternative immutable sever provisioning methods. Things have since moved on and the introduction of contain based toolchains like Docker have made it's need obsolete.
+>If you still require usage of the orca gem please lock your gem version to `0.4.0` as the `orca` name will shortly be handed over to another gem maintainer.
+
 Orca
 ====
 

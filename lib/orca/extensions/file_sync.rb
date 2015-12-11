@@ -74,7 +74,7 @@ class Orca::FileSync
         if fs.create_dir(self)
           mk_dir = fs.create_dir(self) == true ? File.dirname(fs.remote_path(self)) : fs.create_dir(self)
           sudo("mkdir -p #{mk_dir}")
-          sudo("chown #{fs.user}:#{fs.group(self) || fs.user(self)} #{mk_dir}") if fs.user(self)
+          sudo("chown #{fs.user(self)}:#{fs.group(self) || fs.user(self)} #{mk_dir}") if fs.user(self)
         end
         local_file = local(fs.local_path_for_node(self))
         tmp_path = "orca-upload-#{local_file.hash}"
@@ -97,7 +97,7 @@ class Orca::FileSync
     fs = self
     add_package('permissions') do |package|
       package.command :apply do
-        remote(fs.remote_path).set_owner(fs.user(self), fs.group(self)) unless fs.user(self).nil? and fs.group(self).nil?
+        remote(fs.remote_path(self)).set_owner(fs.user(self), fs.group(self)) unless fs.user(self).nil? and fs.group(self).nil?
         remote(fs.remote_path(self)).set_permissions(fs.permissions(self)) unless fs.permissions(self).nil?
         fs.run_after_apply(self)
       end
