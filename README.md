@@ -82,7 +82,7 @@ So here are some examples (assuming you have a package called "app" and a node c
     orca remove app server
     orca validate app server
 
-If you have a package with the same name as a group or node you can abreviate this to...
+If you have a package with the same name as a group or node you can abbreviate this to...
 
     orca apply server
     orca remove server
