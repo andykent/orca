@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    orca (0.4.0)
+    orca (0.4.1)
       colored
       net-sftp
       net-ssh
@@ -18,10 +18,10 @@ GEM
       metaclass (~> 0.0.1)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (2.6.8)
-    rake (10.0.4)
-    thor (0.18.1)
-    tilt (1.4.1)
+    net-ssh (5.2.0)
+    rake (12.3.3)
+    thor (1.0.1)
+    tilt (2.0.10)
 
 PLATFORMS
   ruby
